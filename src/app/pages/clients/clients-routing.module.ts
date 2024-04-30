@@ -7,7 +7,7 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
 const routes: Routes = [
   {path:"" ,component:ListClientsComponent},
   {path:"new",component:AddClientComponent},
-  {path:"client/:id" ,component:ClientDetailComponent}
+  {path:"user/:id" ,component:ClientDetailComponent}
 ];
 
 @NgModule({

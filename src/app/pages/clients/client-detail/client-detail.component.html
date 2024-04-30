@@ -12,60 +12,45 @@
         </li>
         <li>/</li>
         <li>
-          <a class="active">{{client.name}} details</a>
+          <a class="active">{{user.name}} details</a>
         </li>
       </ul>
     </div>
-    <a routerLink="/admin/clients" class="btn-download">
+    <a routerLink="/admin/users" class="btn-download">
       <i class='bx bxs-cloud-download fa-solid fa-list '></i>
-      <span class="text">List Client</span>
+      <span class="text">List user</span>
     </a>
   </div>
 
   <div>
     <ul class="w-full  mt-10 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg 0">
       <li class="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg ">
-        Name<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.name }}
+        first Name<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ user.firstName }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        Email<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.email }}
+        last Name<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ user.lastName }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        Phone<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.phone }}
+        email<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ user.email }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        Address<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.address }}
+        password <i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ user.passwordHash }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        City<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.city }}
+        bio<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ !user.bio ? "nat availble":user.bio }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        State<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.state }}
+        country<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ !user.country ? "not availble":user.country }}
       </li>
       <li class="w-full px-4 py-4 border-b border-gray-200 ">
-        Zip<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.zip }}
+        user Type<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ user.userType }}
       </li>
-      <li class="w-full px-4 py-4 rounded-b-lg">
-        Country<i class="fa-solid fa-greater-than ml-10 mr-10"></i> {{ client.country }}
-      </li>
+
+      
     </ul>
   </div>
 
-  <div class="mt-10 grid-container">
-    <div class="text-sm font-medium p-4 text-gray-900 bg-white border border-gray-200 rounded-lg" *ngFor="let domain of relatedCDomainsBasedOnTheSameClient">
-      <h1 class="text-3xl flex justify-between items-center">{{domain.domainName}} <div class="bg-[#3C91E6] cursor-pointer p-2 h-[25px] w-[25px] flex justify-center items-center rounded-lg " (click)="viewdomain(domain)"><i class="fa-solid text-white text-sm font-bold fa-eye"></i></div> </h1>
-      <p class="text-xl justify-between flex items-center">Status  <span class="text-sm">
-        <div *ngIf="domain.status" class="flex items-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-1"></div> Active
-      </div>
-      <div *ngIf="!domain.status" class="flex items-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-1"></div> Inactive
-      </div>
-      </span></p>
-      <p class="text-xl flex items-center justify-between">Price <span class="text-sm">{{domain.purchasePrice}}$ <i class="fa-solid fa-minus"></i> {{domain.buyingPrice}}$</span></p>
-      <p class="text-xl flex items-center justify-between">Date  <span class="text-sm">{{formatReadableDate(domain.startDate)}} <i class="fa-solid fa-minus"></i> {{formatReadableDate(domain.endDate)}}</span></p>
-    </div>
-  </div>
+
 
 
 </main>

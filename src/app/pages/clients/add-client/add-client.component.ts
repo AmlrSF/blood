@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthUserService } from 'src/app/services/auth/auth-user.service';
 
 @Component({
   selector: 'app-add-client',
@@ -7,33 +10,62 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./add-client.component.css']
 })
 export class AddClientComponent implements OnInit {
-  public addClient!: FormGroup;
+  public addUser!: FormGroup;
+  private apiUrl = 'http://localhost:3000/api/v1/customers/register';
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private auth: AuthUserService,
+    private http: HttpClient
+  ) { }
 
-  constructor(private fb: FormBuilder) { }
-
+  public setLoading:boolean=false;
   ngOnInit() {
-    this.addClient = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zip: ['', Validators.required],
-      country: ['', Validators.required],
+    this.addUser = this.fb.group({
+      fname: ['', Validators.required],
+      lname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      userType: ['', Validators.required]
     });
   }
 
-  submitForm() {
-    // Handle form submission logic here
-    if (this.addClient.valid) {
-      console.log('Form submitted:', this.addClient.value);
+  navigateToRegister() {
+    this.router.navigate(['/Login']);
+  }
+
+  public onSubmit() {
+
+    if (this.addUser.valid) {
+      console.log(this.addUser.value);
+
+      this.setLoading = true;
+      try {
 
 
+        this.http.post(this.apiUrl, this.addUser.value).subscribe(
+          (res: any) => {
+            console.log(res);
 
-    } else {
+            if (res.success === false && res.error === 'Email already in use') {
+              alert("Email already use")
+            }
 
-      console.log('Form has validation errors');
+            this.setLoading = false;
+            this.addUser.reset();
+
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+
+
+      } catch (error) {
+        console.error(error);
+      }
+
+
     }
   }
 }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-list-clients',
@@ -9,12 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-clients.component.css']
 })
 export class ListClientsComponent implements OnInit {
-  private apiUrl:string = "http://localhost:3000/api/v1/clients"
-  clients: any[] = [];
-  filteredClients: any[] = [];
+  private apiUrl:string = "http://localhost:3000/api/v1/customers"
+  Users: any[] = [];
+  filteredUsers: any[] = [];
   isDropdownOpen: boolean = false;
   private id:string = "";
-  ;
+  public setLoading:boolean=false;
   filters = [
     { id: 'filter-radio-example-1', value: 'last-day', label: 'Last day' },
     { id: 'filter-radio-example-2', value: 'last-7-days', label: 'Last 7 days' },
@@ -22,42 +23,40 @@ export class ListClientsComponent implements OnInit {
     { id: 'filter-radio-example-4', value: 'last-month', label: 'Last month' },
     { id: 'filter-radio-example-5', value: 'last-year', label: 'Last year' },
   ];
-  clientsService: any;
+  UsersService: any;
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   
-  public addClient!: FormGroup;
+  public addUser!: FormGroup;
 
   constructor(private fb: FormBuilder, private router:Router,private http : HttpClient) { }
 
  
 
   ngOnInit(): void {
-    this.getClients();
-    this.addClient = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zip: ['', Validators.required],
-      country: ['', Validators.required],
+    this.getUsers();
+    this.addUser = this.fb.group({
+      fname: ['', Validators.required],
+      lname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      userType: ['', Validators.required]
     });
+  
   }
 
-  getClients(): void {
+  getUsers(): void {
     this.http.get(this.apiUrl).subscribe(
-      (clients: any) => {
-        this.clients = clients.clients;
-        this.filteredClients = [...this.clients];
-        console.log('Clients:', this.clients);
+      (Users: any) => {
+        this.Users = Users.customers;
+        this.filteredUsers = [...this.Users];
+        console.log('Users:', this.Users);
       },
       (error: any) => {
-        console.error('Error fetching clients:', error);
+        console.error('Error fetching Users:', error);
       }
     );
   }
@@ -70,31 +69,28 @@ export class ListClientsComponent implements OnInit {
   }
   
 
-  viewClient(client: any): void {
-    console.log('View Client:', client);
+  viewUser(user: any): void {
+    console.log('View user:', user);
 
-    // Assuming 'id' is a property in your client object
-    const clientId = client._id;
+    // Assuming 'id' is a property in your user object
+    const userId = user._id;
 
-    // Navigate to the client details page with the client ID
-    this.router.navigate(['/admin/clients/client', clientId]);
+    // Navigate to the user details page with the user ID
+    this.router.navigate(['/admin/users/user', userId]);
   }
 
-  // Function to edit a client
-  editClient(client: any): void {
-     // Assuming you have a form group for editing (editClientForm)
-     this.addClient.patchValue({
-      name: client.name,
-      email: client.email,
-      phone: client.phone,
-      address: client.address,
-      city: client.city,
-      state: client.state,
-      zip: client.zip,
-      country: client.country,
+  // Function to edit a user
+  editUser(user: any): void {
+     // Assuming you have a form group for editing (edituserForm)
+     this.addUser.patchValue({
+      fname: user?.firstName,
+      lname: user?.lastName,
+      email: user?.email,
+      password: user?.passwordHash,
+      userType: user?.userType
    });
 
-   this.id = client._id;
+   this.id = user._id;
 
    // Show the modal
    document.getElementById('editUserModal')?.classList.remove('hidden');
@@ -105,24 +101,35 @@ export class ListClientsComponent implements OnInit {
     document.getElementById('editUserModal')?.classList.add('hidden');
   }
 
-  // Function to delete a client
-  deleteClient(client: any): void {
-    this.http.delete(`${this.apiUrl}/Client/${client._id}`).subscribe((res:any)=>{
+  // Function to delete a user
+  deleteUser(user: any): void {
+    this.http.delete(`${this.apiUrl}/users/${user._id}`).subscribe((res:any)=>{
       console.log(res);
-      this.getClients();
+      this.getUsers();
     })
   }
 
   public submitForm(): void {
-    if (this.addClient.valid) {
-      const formData = { ...this.addClient.value }; // Convert FormGroup to a plain object
-  
+    if (this.addUser.valid) {
+      const formData = {
+        firstName:this.addUser.value.fname,
+        passwordHash:this.addUser.value.password,
+        lastName:this.addUser.value.lname,
+        userType:this.addUser.value.userType,
+        email:this.addUser.value.email
+       }; // Convert FormGroup to a plain object
+
+       
+       console.log(formData);
+       
+
       // Send formData to the server
-      this.http.put(`${this.apiUrl}/Client/${this.id}`, formData).subscribe(
+      this.http.put(`${this.apiUrl}/${this.id}`, formData).subscribe(
         (res: any) => {
           if(res.success){
-            this.getClients();
+            this.getUsers();
             this.closeModel();
+            this.addUser.reset();
           }
         }
       );
@@ -135,15 +142,11 @@ export class ListClientsComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredClients = this.clients.filter(client =>
-      client.name.toLowerCase().includes(filterValue) ||
-      client.email.toLowerCase().includes(filterValue) ||
-      client.phone.includes(filterValue) ||
-      client.address.toLowerCase().includes(filterValue) ||
-      client.city.toLowerCase().includes(filterValue) ||
-      client.state.toLowerCase().includes(filterValue) ||
-      client.zip.includes(filterValue) ||
-      client.country.toLowerCase().includes(filterValue)
+    this.filteredUsers = this.Users.filter(user =>
+      user.firstName.toLowerCase().includes(filterValue) ||
+      user.lastName.toLowerCase().includes(filterValue) ||
+      user.email.includes(filterValue) ||
+      user.password.toLowerCase().includes(filterValue)
     );
   }
 }
