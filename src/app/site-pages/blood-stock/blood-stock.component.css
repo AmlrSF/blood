@@ -1,0 +1,39 @@
+.left h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+ .left .breadcrumb {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+}
+
+ .left .breadcrumb li {
+    color: var(--dark);
+}
+
+ .left .breadcrumb li a {
+    color: var(--dark-grey);
+    pointer-events: none;
+}
+
+ .left .breadcrumb li a.active {
+    color: var(--blue);
+    pointer-events: unset;
+}
+
+.btn-download {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 36px;
+    background: var(--blue);
+    color: var(--light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 10px;
+    font-weight: 500;
+  }

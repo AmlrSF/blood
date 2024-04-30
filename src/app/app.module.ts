@@ -17,6 +17,10 @@ import { SiteNavbarComponent } from './shared/site-navbar/site-navbar.component'
 import { SiteFooterComponent } from './shared/site-footer/site-footer.component';
 import { ProfileComponent } from './site-pages/profile/profile.component';
 import { SettingsComponent } from './site-pages/settings/settings.component';
+import { RequestListsComponent } from './site-pages/request-lists/request-lists.component';
+import { NewRequestComponent } from './site-pages/new-request/new-request.component';
+import { BloodStockComponent } from './site-pages/blood-stock/blood-stock.component';
+import { BloodBankRequestsComponent } from './site-pages/blood-bank-requests/blood-bank-requests.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,10 @@ import { SettingsComponent } from './site-pages/settings/settings.component';
     SiteFooterComponent,
     ProfileComponent,
     SettingsComponent,
+    RequestListsComponent,
+    NewRequestComponent,
+    BloodStockComponent,
+    BloodBankRequestsComponent,
     
   ],
   imports: [

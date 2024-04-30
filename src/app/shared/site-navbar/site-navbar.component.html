@@ -1,57 +1,88 @@
 <div class="header" id="header">
-    <div class="container">
-      <a href="#" class="logo">BloodyConnect</a>
+  <div class="container">
+    <a href="#" class="logo">BloodyConnect</a>
+
+    <div *ngIf="customer?.userType === 'admission'; else elseBlock1">
       <ul class="main-nav">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#work-steps">How It Works</a></li>
-     
+        <li><a  [routerLink]="'/requests-list'">Request List</a></li>
+        <li><a [routerLink]="'/blood-request'">New request</a></li>
       </ul>
-      <div *ngIf="customer; else notLoggedInMessage">
-        <div class="flex items-center gap-5 rounded-full p-1 bg-[#fd3a36]">
-  
-          <button (click)="toggleDropdown()" type="button"
-            class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 " id="user-menu-button"
-            aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-            <span class="sr-only">Open user menu</span>
-            <img class="w-12 h-12 rounded-full"
-              [src]="customer?.profileImage ? customer.profileImage  : '../../assets/download.png'" alt="user photo">
-          </button>
-        </div>
-        <!-- Dropdown menu -->
-        <div
-          class="z-[101010101] hidden absolute right-[20px] top-[px]  my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow "
-          id="user-dropdown">
-          <div class="px-4 py-3">
-            <span class="block text-sm text-gray-900 ">{{customer?.lastName}}
-              {{customer?.firstName}}</span>
-            <span class="block text-sm  text-gray-500 truncate ">{{customer?.email}}</span>
-          </div>
-          <ul class="py-2" aria-labelledby="user-menu-button">
-            <li>
-    
-            </li>
-            <li>
-              <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Profile</a>
-            </li>
-            <li>
-              <a routerLink="/settings"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
-            </li>
-            <li>
-              <a (click)="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign
-                out</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    
-      <ng-template #notLoggedInMessage>
-        <a routerLink="/Login" class="text-xl px-8 py-4 rounded-xl text-white bg-[#fd3a36] ">
-          Sign Up
-        </a>
-      </ng-template>
+
     </div>
+    <ng-template #elseBlock1>
+      <div *ngIf="customer?.userType === 'blood bank'; else elseBlock2">
+        <ul class="main-nav">
+          <li><a [routerLink]="'/requests-list'">Addmission Requests</a></li>
+          <li><a [routerLink]="'/blood-stock'">Blood Stock</a></li>
+        </ul>
+
+      </div>
+
+      <ng-template #elseBlock2>
+        <div *ngIf="customer?.userType === 'supplier'; else elseBlock3">
+          <ul class="main-nav">
+            <li><a [routerLink]="'/BankAddmission-requests'">Blood Bank Requests</a></li>
+          </ul>
+
+        </div>
+
+        <ng-template #elseBlock3>
+          <ul class="main-nav">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#work-steps">How It Works</a></li>
+          </ul>
+
+        </ng-template>
+      </ng-template>
+    </ng-template>
+
+
+
+    <div *ngIf="customer; else notLoggedInMessage">
+      <div class="flex items-center gap-5 rounded-full p-1 bg-[#fd3a36]">
+
+        <button (click)="toggleDropdown()" type="button"
+          class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 " id="user-menu-button"
+          aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+          <span class="sr-only">Open user menu</span>
+          <img class="w-12 h-12 rounded-full"
+            [src]="customer?.profileImage ? customer.profileImage  : '../../assets/download.png'" alt="user photo">
+        </button>
+      </div>
+      <!-- Dropdown menu -->
+      <div
+        class="z-[101010101] hidden absolute right-[20px] top-[px]  my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow "
+        id="user-dropdown">
+        <div class="px-4 py-3">
+          <span class="block text-sm text-gray-900 ">{{customer?.lastName}}
+            {{customer?.firstName}}</span>
+          <span class="block text-sm  text-gray-500 truncate ">{{customer?.email}}</span>
+        </div>
+        <ul class="py-2" aria-labelledby="user-menu-button">
+          <li>
+
+          </li>
+          <li>
+            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Profile</a>
+          </li>
+          <li>
+            <a routerLink="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
+          </li>
+          <li>
+            <a (click)="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign
+              out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ng-template #notLoggedInMessage>
+      <a routerLink="/Login" class="text-xl px-8 py-4 rounded-xl text-white bg-[#fd3a36] ">
+        Sign Up
+      </a>
+    </ng-template>
   </div>
-  <!-- End Header -->
+</div>
+<!-- End Header -->
