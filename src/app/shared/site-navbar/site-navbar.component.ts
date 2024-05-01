@@ -33,8 +33,6 @@ export class SiteNavbarComponent  implements OnInit{
           if(res.success){
             if(res.customer.role == 1){
               this.router.navigate(["admin"] )
-            }else{
-              this.router.navigate(["/"] )
             }
           }
          

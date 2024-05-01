@@ -2,19 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthUserService } from 'src/app/services/auth/auth-user.service';
 
 @Component({
   selector: 'app-request-lists',
   templateUrl: './request-lists.component.html',
   styleUrls: ['./request-lists.component.css']
 })
-export class RequestListsComponent  implements OnInit {
-  private apiUrl:string = "http://localhost:3000/api/v1/customers"
-  Users: any[] = [];
-  filteredUsers: any[] = [];
+export class RequestListsComponent implements OnInit {
+  private apiUrl: string = "http://localhost:3000/api/v1/requestBloodByAdmission";
+  RequestBloodData: any[] = [];
+  filteredRequestBloodData: any[] = [];
   isDropdownOpen: boolean = false;
-  private id:string = "";
-  public setLoading:boolean=false;
+  private id: string = "";
+
+  public setLoading: boolean = false;
   filters = [
     { id: 'filter-radio-example-1', value: 'last-day', label: 'Last day' },
     { id: 'filter-radio-example-2', value: 'last-7-days', label: 'Last 7 days' },
@@ -22,130 +24,160 @@ export class RequestListsComponent  implements OnInit {
     { id: 'filter-radio-example-4', value: 'last-month', label: 'Last month' },
     { id: 'filter-radio-example-5', value: 'last-year', label: 'Last year' },
   ];
-  UsersService: any;
+
+  public AddrequestBlood!: FormGroup;
+  user: any;
+
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private auth: AuthUserService) { }
+
+  ngOnInit(): void {
+    let token = {
+      token: this.auth.getToken()
+    };
+
+    console.log(token);
+
+    try {
+      this.http.post(`http://localhost:3000/api/v1/customers/profile`, token).subscribe(
+        (res: any) => {
+
+
+          if (res.success) {
+            if (res.customer.role == 1) {
+              this.router.navigate(["admin"])
+            }
+          }
+
+          this.user = res.customer;
+
+          console.log(this.user);
+
+
+
+        }, (err: any) => {
+          console.log(err);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    this.getRequestBloodData();
+    this.AddrequestBlood = this.fb.group({
+      admissionNumber: ['', Validators.required],
+      bloodType: ['', Validators.required],
+      rhesus: ['', Validators.required],
+      selectedPhenotypes: ['', Validators.required],
+      emergencyDegree: [false, Validators.required],
+      product: ['', Validators.required],
+      qualifications: ['', Validators.required],
+      quantity: ['', Validators.required],
+      passionNumber:['', Validators.required]
+    });
+  }
+
+  getRequestBloodData(): void {
+    this.http.get(this.apiUrl).subscribe(
+      (RequestBloodData: any) => {
+        this.RequestBloodData = RequestBloodData.requestData;
+        this.filteredRequestBloodData = [...this.RequestBloodData];
+        console.log('RequestBloodData:', this.RequestBloodData);
+      },
+      (error: any) => {
+        console.error('Error fetching RequestBloodData:', error);
+      }
+    );
+  }
+
+  public formatReadableDate(dateString: any) {
+    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString('en-US', options);
+  }
+
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  
-  public addUser!: FormGroup;
-
-  constructor(private fb: FormBuilder, private router:Router,private http : HttpClient) { }
-
- 
-
-  ngOnInit(): void {
-    this.getUsers();
-    this.addUser = this.fb.group({
-      fname: ['', Validators.required],
-      lname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      userType: ['', Validators.required]
-    });
-  
-  }
-
-  getUsers(): void {
-    this.http.get(this.apiUrl).subscribe(
-      (Users: any) => {
-        this.Users = Users.customers;
-        this.filteredUsers = [...this.Users];
-        console.log('Users:', this.Users);
-      },
-      (error: any) => {
-        console.error('Error fetching Users:', error);
-      }
-    );
-  }
-  public formatReadableDate(dateString: any) {
-    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
-  
-    const date = new Date(dateString);
-  
-    return date.toLocaleString('en-US', options);
-  }
-  
-
-  viewUser(user: any): void {
+  viewRequestetBlood(user: any): void {
     console.log('View user:', user);
-
-    // Assuming 'id' is a property in your user object
     const userId = user._id;
-
-    // Navigate to the user details page with the user ID
-    this.router.navigate(['/admin/users/user', userId]);
+    this.router.navigate(['/admin/RequestBloodData/user', userId]);
   }
 
-  // Function to edit a user
-  editUser(user: any): void {
-     // Assuming you have a form group for editing (edituserForm)
-     this.addUser.patchValue({
-      fname: user?.firstName,
-      lname: user?.lastName,
-      email: user?.email,
-      password: user?.passwordHash,
-      userType: user?.userType
-   });
-
-   this.id = user._id;
-
-   // Show the modal
-   document.getElementById('editUserModal')?.classList.remove('hidden');
-   
+  editRequestetBlood(user: any): void {
+    this.AddrequestBlood.patchValue({
+      admissionNumber: user?.admissionNumber,
+      bloodType: user?.bloodType,
+      rhesus: user?.rhesus,
+      emergencyDegree: user?.emergencyDegree,
+      product: user?.product,
+      qualifications: user?.qualifications,
+      quantity: user?.quantity,
+      passionNumber:user?.passionNumber
+    });
+    this.id = user._id;
+    document.getElementById('editUserModal')?.classList.remove('hidden');
   }
 
-  public closeModel(){
+  closeModel(): void {
     document.getElementById('editUserModal')?.classList.add('hidden');
   }
 
-  // Function to delete a user
-  deleteUser(user: any): void {
-    this.http.delete(`${this.apiUrl}/users/${user._id}`).subscribe((res:any)=>{
+  deleteRequestetBlood(user: any): void {
+    this.http.delete(`${this.apiUrl}/${user._id}`).subscribe((res: any) => {
       console.log(res);
-      this.getUsers();
+      this.getRequestBloodData();
     })
   }
 
-  public submitForm(): void {
-    if (this.addUser.valid) {
-      const formData = {
-        firstName:this.addUser.value.fname,
-        passwordHash:this.addUser.value.password,
-        lastName:this.addUser.value.lname,
-        userType:this.addUser.value.userType,
-        email:this.addUser.value.email
-       }; // Convert FormGroup to a plain object
-
-       
-       console.log(formData);
-       
-
-      // Send formData to the server
-      this.http.put(`${this.apiUrl}/${this.id}`, formData).subscribe(
-        (res: any) => {
-          if(res.success){
-            this.getUsers();
-            this.closeModel();
-            this.addUser.reset();
-          }
+  submitForm(): void {
+    this.AddrequestBlood.value["selectedPhenotypes"] = this.selectedPhenotypes;
+    const formData = this.AddrequestBlood.value;
+    console.log(formData);
+    this.http.put(`${this.apiUrl}/${this.id}`, formData).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.getRequestBloodData();
+          this.closeModel();
+          this.AddrequestBlood.reset();
         }
-      );
-    } else {
-      // Handle form validation errors
-      console.log('Form is invalid. Please check the fields.');
-    }
+      }
+    );
   }
-  
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredUsers = this.Users.filter(user =>
-      user.firstName.toLowerCase().includes(filterValue) ||
-      user.lastName.toLowerCase().includes(filterValue) ||
-      user.email.includes(filterValue) ||
-      user.password.toLowerCase().includes(filterValue)
+    this.filteredRequestBloodData = this.RequestBloodData.filter(user =>
+      user.bloodType.toLowerCase().includes(filterValue) ||
+      user.rhesus.toLowerCase().includes(filterValue) ||
+      user.product.includes(filterValue) ||
+      user.passionNumber.toLowerCase().includes(filterValue)
     );
   }
+  selectedPhenotypes: string = ''; // Initialize selected phenotypes string
+
+  // Method to update selected phenotypes string based on radio button selection
+  updateSelectedPhenotypes(phenotype: string, value: string): void {
+    if (value === 'Positive') {
+      this.selectedPhenotypes += `${phenotype}+`;
+    } else if (value === 'Negative') {
+      this.selectedPhenotypes += `${phenotype}-`;
+    }
+  }
+
+  public ActivateRequestetBlood = (request: any) => {
+
+    this.http.put(`${this.apiUrl}/${request._id}`, { status: !request.status }).subscribe(
+      (res: any) => {
+        if (res.success) {
+          console.log(res)
+          this.getRequestBloodData();
+        }
+      }
+    );
+  }
+
 }
