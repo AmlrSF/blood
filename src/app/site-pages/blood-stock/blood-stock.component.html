@@ -18,6 +18,33 @@
         </a>
     </div>
     <div class="min-h-[70vh]">
+        <!-- blood-stock.component.html -->
+
+        <div class="blood-products mt-8">
+            <div *ngFor="let product of productsWithElements" class="product">
+                <div class="flex justify-between items-center border-b pb-3 border-[#D9D9D9]">
+                    <h3 class="text-2xl font-bold flex items-center gap-3">
+                        <i class="fa-solid fa-caret-right"></i>{{ product.product }}
+                    </h3>
+                    <button class="btn-download">
+                        <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
+                        <span class="text">Request More</span>
+                    </button>
+                </div>
+                <ul class="bloodsbagsgrid my-5">
+                    <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of product.elements">
+                        <div class="blood-element">
+                            <p class="flex items-center justify-between"><span class="text-lg font-semibold">Type: {{
+                                    element.type }}</span> <span><i
+                                        class="fa-solid text-3xl text-red-600 fa-droplet"></i></span></p>
+                            
+                            <p>Expire Date: {{ element.expireDate | date }}</p>
+                            <p>Status: {{ element.status }}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
     </div>
 </main>

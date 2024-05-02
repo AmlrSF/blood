@@ -76,7 +76,8 @@
             <tbody>
                 <!-- Table Rows -->
                 <tr *ngFor="let request of filteredRequestBloodData" class="bg-white border-b hover:bg-gray-50">
-                    <div *ngIf="user?.userType==='blood bank'" class="flex items-center gap-1 justify-center p-4">
+                    <div *ngIf="user?.userType==='blood bank'" 
+                    class="flex items-center gap-1 justify-center p-4">
                         <img class="w-12 h-12 rounded-full"
                             [src]="request?.admissionNumber?.profileImage ? request.admissionNumber.profileImage  : '../../assets/download.png'"
                             alt="user photo">
@@ -91,7 +92,7 @@
                     <td class="text-center p-4">{{ request.emergencyDegree ? 'Urgent' : 'Non-urgent' }}</td>
                     <td class="text-center p-4">{{ request.product }}</td>
                     <td class="text-center p-4">{{ request.qualifications }}</td>
-                    <td class="text-center p-4">{{ request.quantity }}L</td>
+                    <td class="text-center p-4">{{ request.quantity }}Bag</td>
                     <td class="text-center p-4">{{ formatReadableDate(request.requestedDate) }}</td>
                     <td class="text-center p-4">
                         <div *ngIf="request.status" class="flex items-center gap-1 justify-center">

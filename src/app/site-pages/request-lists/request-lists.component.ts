@@ -169,12 +169,15 @@ export class RequestListsComponent implements OnInit {
   }
 
   public ActivateRequestetBlood = (request: any) => {
-
-    this.http.put(`${this.apiUrl}/${request._id}`, { status: !request.status }).subscribe(
+    
+    this.http.put(`${this.apiUrl}/${request._id}/Activaterequest`, {}).subscribe(
       (res: any) => {
+        
         if (res.success) {
           console.log(res)
           this.getRequestBloodData();
+        }else{
+          alert(res.message);
         }
       }
     );
