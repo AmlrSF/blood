@@ -150,13 +150,19 @@ export class RequestListsComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    console.log(filterValue);
+    
     this.filteredRequestBloodData = this.RequestBloodData.filter(user =>
-      user.bloodType.toLowerCase().includes(filterValue) ||
-      user.rhesus.toLowerCase().includes(filterValue) ||
-      user.product.includes(filterValue) ||
-      user.passionNumber.toLowerCase().includes(filterValue)
+      (user.bloodType && user.bloodType.toLowerCase().includes(filterValue)) ||
+      (user.rhesus && user.rhesus.toLowerCase().includes(filterValue)) ||
+      (user.product && user.product.includes(filterValue)) ||
+      (user.quantity && user.quantity === +filterValue) || // Check for exact match
+      (user.selectedPhenotypes && user.selectedPhenotypes.includes(filterValue)) ||
+      (user.passionNumber && user.passionNumber.toLowerCase().includes(filterValue))
     );
   }
+  
+  
   selectedPhenotypes: string = ''; // Initialize selected phenotypes string
 
   // Method to update selected phenotypes string based on radio button selection

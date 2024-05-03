@@ -2,4 +2,8 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    }
+}
+
+.emergency-row {
+    background-color: rgba(255, 0, 0, 0.8);
+}

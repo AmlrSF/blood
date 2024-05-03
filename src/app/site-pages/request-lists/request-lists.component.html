@@ -75,9 +75,10 @@
             </thead>
             <tbody>
                 <!-- Table Rows -->
-                <tr *ngFor="let request of filteredRequestBloodData" class="bg-white border-b hover:bg-gray-50">
-                    <div *ngIf="user?.userType==='blood bank'" 
-                    class="flex items-center gap-1 justify-center p-4">
+                <tr *ngFor="let request of filteredRequestBloodData" class="bg-white border-b hover:bg-gray-50"
+                    [class.emergency-row]="request.emergencyDegree">
+                    <div *ngIf="user?.userType==='blood bank'" class="
+                    flex items-center gap-1 justify-center p-5 m-4">
                         <img class="w-12 h-12 rounded-full"
                             [src]="request?.admissionNumber?.profileImage ? request.admissionNumber.profileImage  : '../../assets/download.png'"
                             alt="user photo">

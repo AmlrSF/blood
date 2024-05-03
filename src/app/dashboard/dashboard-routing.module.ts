@@ -6,10 +6,8 @@ const routes: Routes = [
   { path : "", component : DashboardLayoutComponent ,children:[
     { path : 'home',    loadChildren :()=>import("../pages/overview/overview.module").then(m=>m.OverviewModule) },
     { path : 'users',    loadChildren :()=>import("../pages/clients/clients.module").then(m=>m.ClientsModule) },
-    { path : 'Projects', loadChildren : ()=>import("../pages/projects/projects.module").then(m=>m.ProjectsModule) },
     { path : 'settings',loadChildren: ()=>import("../pages/settings/settings.module").then(m=>m.SettingsModule) },
     { path:  'profile',  loadChildren: ()=>import("../pages/profile/profile.module").then(m=>m.ProfileModule) },
-    { path : 'notifications', loadChildren: ()=>import("../pages/notifications/notifications.module").then(m=>m.NotificationsModule)},
     { path : "", redirectTo: "/admin/home", pathMatch:"full" }
   ]}
 ];

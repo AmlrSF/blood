@@ -103,7 +103,7 @@ export class ListClientsComponent implements OnInit {
 
   // Function to delete a user
   deleteUser(user: any): void {
-    this.http.delete(`${this.apiUrl}/users/${user._id}`).subscribe((res:any)=>{
+    this.http.delete(`${this.apiUrl}/${user._id}`).subscribe((res:any)=>{
       console.log(res);
       this.getUsers();
     })
@@ -142,11 +142,14 @@ export class ListClientsComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    // console.log(filterValue)
     this.filteredUsers = this.Users.filter(user =>
-      user.firstName.toLowerCase().includes(filterValue) ||
-      user.lastName.toLowerCase().includes(filterValue) ||
-      user.email.includes(filterValue) ||
-      user.password.toLowerCase().includes(filterValue)
+      (user?.firstName && user.firstName.toLowerCase().includes(filterValue)) ||
+      (user?.lastName && user.lastName.toLowerCase().includes(filterValue)) ||
+      (user?.email && user.email.includes(filterValue)) ||
+      (user?.password && user.password.toLowerCase().includes(filterValue)) ||
+      (user?.userType && user.userType.toLowerCase().includes(filterValue))
     );
   }
+  
 }
