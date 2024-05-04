@@ -21,6 +21,7 @@ import { RequestListsComponent } from './site-pages/request-lists/request-lists.
 import { NewRequestComponent } from './site-pages/new-request/new-request.component';
 import { BloodStockComponent } from './site-pages/blood-stock/blood-stock.component';
 import { BloodBankRequestsComponent } from './site-pages/blood-bank-requests/blood-bank-requests.component';
+import { RequestBloodBankDetailsComponent } from './site-pages/request-blood-bank-details/request-blood-bank-details.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,8 @@ import { BloodBankRequestsComponent } from './site-pages/blood-bank-requests/blo
     NewRequestComponent,
     BloodStockComponent,
     BloodBankRequestsComponent,
+    
+    RequestBloodBankDetailsComponent,
     
   ],
   imports: [

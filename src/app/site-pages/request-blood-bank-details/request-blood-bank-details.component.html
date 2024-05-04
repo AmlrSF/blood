@@ -1,0 +1,75 @@
+<main class="container">
+    <div class="head-title flex justify-between items-center mt-5 border-b-[1.5px] pb-8 border-[rgba(0,0,0,0.2)]">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>/</li>
+                <li>
+                    <a class="active">Blood Stock</a>
+                </li>
+            </ul>
+        </div>
+        <a routerLink="/BankAddmission-requests" class="btn-download">
+            <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
+            <span class="text">Request List</span>
+        </a>
+    </div>
+    <div class="min-h-[70vh]">
+        <div class=" border-b-[1.5px] pb-5 border-[rgba(0,0,0,0.2)]
+        flex items-center gap-1 justify-start text-xl font-semibold  mt-5">
+            <div class=" border-r-[1.5px] pr-8 border-[rgba(0,0,0,0.2)] ">
+                <img class="w-24 h-24 rounded-full"
+                    [src]="RequestBloodData?.requester?.profileImage ? RequestBloodData.admissionNumber.profileImage  : '../../assets/download.png'"
+                    alt="user photo">
+                {{RequestBloodData.requester.lastName}}
+                {{RequestBloodData.requester.firstName}}
+            </div>
+            <p class=" pl-8 font-normal text-lg">requested </p>
+            {{RequestBloodData.quantityOfBags}}
+            <p class=" font-normal text-lg">Bags of Blood Type</p>
+            [ {{RequestBloodData.bloodType}} ]
+            <p class=" font-normal text-lg">and of the product </p>
+            {{ RequestBloodData.productType}}
+        </div>
+        <div class=" border-b-[1.5px] pb-5 border-[rgba(0,0,0,0.2)]
+        flex items-center gap-1 justify-start text-xl   mt-5">
+            <!-- Form for adding blood bags -->
+            <form (ngSubmit)="addBloodBag()" [formGroup]="bloodBagForm" class="flex items-center">
+                <input type="text"  formControlName="BagId" name="BagId" placeholder="Bag ID" class="p-2 border border-gray-300 
+               rounded-lg mr-4">
+                <input type="date"  name="expireDate" formControlName="expireDate" placeholder="Expire Date"
+                    class="p-2 border border-gray-300 rounded-lg mr-4">
+                <button type="submit" class="bg-blue-500 text-white px-4
+                py-2 rounded-lg">ADD</button>
+            </form>
+        </div>
+        <ul class="bloodsbagsgrid my-5 border-b-[1.5px] pb-5 border-[rgba(0,0,0,0.2)]">
+            <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of bloodBags">
+                <div class="blood-element">
+                    <p class="flex items-center justify-between"><span class="text-lg font-semibold">Type: {{
+                            element.type }}</span> <span><i
+                                class="fa-solid text-3xl text-red-600 fa-droplet"></i></span></p>
+
+                    <p>Expire Date: {{ element.expireDate | date }}</p>
+                    <p>Status: {{ element.status }}</p>
+                    <p>Bag Id: {{element.BagId}}</p>
+                    <div class="flex gap-2 items-center">
+                        <button class="p-2 rounded-lg bg-green-500" (click)="editRequestetBlood(element)"><i
+                                class="text-white font-bold fa-solid fa-pen"></i></button>
+                        <button class="p-2 rounded-lg bg-[#DB504A]" (click)="deleteRequestetBlood(element)"><i
+                                class="text-white font-bold fa-solid fa-trash"></i></button>
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div>
+            <button type="submit" class="bg-blue-500 text-white  px-4
+            py-2 rounded-lg" (click)="transfereToBlodBank()">Transfeer To Blood bank</button>
+        </div>
+    </div>
+
+</main>
