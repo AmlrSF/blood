@@ -12,10 +12,16 @@
                 </li>
             </ul>
         </div>
-        <a routerLink="/requests-list" class="btn-download">
-            <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
-            <span class="text">Request List</span>
-        </a>
+        <div class="flex gap-3 items-center">
+            <a routerLink="/requests-list" class="btn-download">
+                <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
+                <span class="text">Request List</span>
+            </a>
+            <button  class="btn-download" (click)="requestBloodbags()">
+                <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
+                <span class="text">Request Blood Bags</span>
+            </button>
+        </div>
     </div>
     <div class="min-h-[70vh]">
         <!-- blood-stock.component.html -->
@@ -40,7 +46,7 @@
 
                             <p>Expire Date: {{ element.expireDate | date }}</p>
                             <p>Status: {{ element.status }}</p>
-
+                            <p>BagId: {{ element.BagId }}</p>           
                         </div>
                     </li>
                 </ul>
@@ -76,6 +82,7 @@
                         <label for="productType" class="block mb-2 text-sm font-medium text-gray-900">product Type</label>
                         <select id="productType" formControlName="productType"
                             class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                            <option value="">Select Product Type</option>
                             <option value="Concentré de globules rouges (PR-001)">Concentré de globules rouges (PR-001)
                             </option>
                             <option value="Concentré standard de plaquettes (PR-002)">Concentré standard de plaquettes

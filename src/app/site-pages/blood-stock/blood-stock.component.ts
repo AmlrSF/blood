@@ -66,11 +66,14 @@ export class BloodStockComponent implements OnInit {
     });
   }
 
-  public requestBloodbags(ele:any){
-    this.requestBloodBag.patchValue({
-      productType:ele.product
-    });
-
+  public requestBloodbags(ele?:any){
+    if(ele){
+      this.requestBloodBag.patchValue({
+        productType:ele.product
+      });
+  
+    }
+   
     document.getElementById('editUserModal')?.classList.remove('hidden');
 
   }
