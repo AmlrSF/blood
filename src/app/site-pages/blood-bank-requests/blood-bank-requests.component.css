@@ -37,3 +37,10 @@
     grid-gap: 10px;
     font-weight: 500;
   }
+
+  .disabled-button {
+    background-color: #ccc; /* Change to the desired shade of grey */
+    color: #666; /* Change to the desired text color */
+    cursor: not-allowed;
+  }
+  

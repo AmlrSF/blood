@@ -81,13 +81,14 @@
                             Pending
                         </div>
                     </td>
-                    <td class="text-center p-4  gap-2">
+                    <td class="text-center p-4 gap-2">
                         <button class="p-2 rounded-lg bg-[#3C91E6] text-white font-medium"
-                            (click)="ActivateRequestetBlood(request)">
-                            Accept request
+                                (click)="ActivateRequestetBlood(request)"
+                                [disabled]="request.status "
+                                [ngClass]="{ 'disabled-button': request.status }">
+                          Accept request
                         </button>
-                    </td>
-                </tr>
+                      </td>
             </tbody>
         </table>
     </div>

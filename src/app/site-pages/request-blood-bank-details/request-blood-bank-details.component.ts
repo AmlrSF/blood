@@ -10,11 +10,10 @@ import { AuthUserService } from 'src/app/services/auth/auth-user.service';
   styleUrls: ['./request-blood-bank-details.component.css']
 })
 export class RequestBloodBankDetailsComponent implements OnInit {
-  transfereToBlodBank() {
-    throw new Error('Method not implemented.');
-  }
 
   private apiUrl: string = "http://localhost:3000/api/v1/RequestBloodBags";
+  private apiUrl1: string = "http://localhost:3000/api/v1/BloodBags";
+
   RequestBloodData: any;
   bloodBags: any[] = [];
   editMode: boolean = false;
@@ -22,7 +21,8 @@ export class RequestBloodBankDetailsComponent implements OnInit {
   selectedBagod: any;
 
   constructor(private fb: FormBuilder,
-    private http: HttpClient, private route: ActivatedRoute, private auth: AuthUserService, private router: Router) { }
+    private http: HttpClient, private route: ActivatedRoute,
+     private auth: AuthUserService, private router: Router) { }
 
   ngOnInit(): void {
     this.bloodBagForm = this.fb.group({
@@ -158,5 +158,35 @@ export class RequestBloodBankDetailsComponent implements OnInit {
     this.selectedBagod = bloodBag.BagId;
     this.editMode = true;
   }
+
+    
+  transfereToBlodBank(qte:number) {
+    const userId = this.route.snapshot.paramMap.get('id');
+
+    if(this.bloodBags.length >= qte)
+    this.http.put(`${this.apiUrl}/${userId}`,{status:true})
+    .subscribe((res:any)=>{
+      localStorage.removeItem("bloodBags");
+      this.router.navigate([`BankAddmission-requests`])
+    },(err:any)=>console.log(err));
+
+    
+
+    this.bloodBags.forEach(element => {
+      this.http.post(this.apiUrl1,element)
+      .subscribe((
+        res:any
+      )=>{
+        console.log(res);
+      },(err:any)=>{
+        console.log(err);
+      })
+    });
+
+    
+
+
+  }
+
 
 }
