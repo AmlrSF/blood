@@ -1,0 +1,54 @@
+<main class="container">
+    <div class="head-title flex justify-between items-center mt-5 border-b-[1.5px] pb-8 border-[rgba(0,0,0,0.2)]">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>/</li>
+                <li>
+                    <a class="active">Transfusion File</a>
+                </li>
+            </ul>
+        </div>
+        <a routerLink="/requests-list" class="btn-download">
+            <i class='bx bxs-cloud-download fa-solid fa-plus '></i>
+            <span class="text">Request List</span>
+        </a>
+    </div>
+
+    <div class="min-h-[70vh]">
+        <h1 class="my-10 text-2xl font-medium text-center">Transfusion file of Passion [{{TransfusionFile?.passionNumber}}]</h1>
+        <div *ngIf="TransfusionFile">
+            <p>Blood Type: {{ TransfusionFile.bloodType }}</p>
+            <p>Rhesus: {{ TransfusionFile.rhesus }}</p>
+            <p>Selected Phenotypes: {{ TransfusionFile.selectedPhenotypes }}</p>
+            <p>Emergency Degree: {{ TransfusionFile.emergencyDegree }}</p>
+            <p>Product: {{ TransfusionFile.product }}</p>
+            <div>Qualifications:
+                <ul  *ngFor="let qualification of TransfusionFile.qualifications">
+                    <li class="text-[16px] my-5 font-semibold">{{ qualification }}</li>
+                </ul>
+            </div>
+            <p>Quantity: {{ TransfusionFile.quantity }}</p>
+            <p>Requested Date: {{ TransfusionFile.requestedDate | date }}</p>
+            <p>Status: {{ TransfusionFile.status ? 'Active' : 'Inactive' }}</p>
+            <div>Reserved Blood Bags:
+                <div class="bloodsbagsgrid">
+                    <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of TransfusionFile.reservedBloodBags">
+                        <div class="blood-element">
+                            <p class="flex items-center justify-between"><span class="text-lg font-semibold">Type: {{
+                                    element.type }}</span> <span><i
+                                        class="fa-solid text-3xl text-red-600 fa-droplet"></i></span></p>
+
+                            <p>Expire Date: {{ element.expireDate | date }}</p>
+                            
+                            <p>BagId: {{ element.BagId }}</p>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

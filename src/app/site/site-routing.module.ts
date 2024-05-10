@@ -9,6 +9,7 @@ import { RequestListsComponent } from '../site-pages/request-lists/request-lists
 import { BloodStockComponent } from '../site-pages/blood-stock/blood-stock.component';
 import { BloodBankRequestsComponent } from '../site-pages/blood-bank-requests/blood-bank-requests.component';
 import { RequestBloodBankDetailsComponent } from '../site-pages/request-blood-bank-details/request-blood-bank-details.component';
+import { BloodTransfusionDetailsComponent } from '../site-pages/blood-transfusion-details/blood-transfusion-details.component';
 
 const routes: Routes = [
   { path: "", component:SiteLayoutComponent , children: [
@@ -20,8 +21,7 @@ const routes: Routes = [
     { path: "blood-stock", component:BloodStockComponent },
     { path: "BankAddmission-requests", component:BloodBankRequestsComponent },
     { path: "BankAddmission-requests/:id", component:RequestBloodBankDetailsComponent },
-
-  
+    { path: "TransfusionDetails/:id", component:BloodTransfusionDetailsComponent }
   ]}
 ];
 

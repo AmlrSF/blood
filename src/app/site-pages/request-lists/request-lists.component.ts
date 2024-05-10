@@ -174,19 +174,8 @@ export class RequestListsComponent implements OnInit {
     }
   }
 
-  public ActivateRequestetBlood = (request: any) => {
-    
-    this.http.put(`${this.apiUrl}/${request._id}/Activaterequest`, {}).subscribe(
-      (res: any) => {
-        
-        if (res.success) {
-          console.log(res)
-          this.getRequestBloodData();
-        }else{
-          alert(res.message);
-        }
-      }
-    );
+  public ActivateRequestetBlood = (request: any) => {     
+    this.router.navigate([`/TransfusionDetails/${request._id}`])
   }
 
 }
