@@ -41,7 +41,7 @@ export class BloodBankRequestsComponent implements OnInit {
     this.http.get(this.apiUrl).subscribe(
       (RequestBloodData: any) => {
         console.log(RequestBloodData)
-        this.RequestBloodData = RequestBloodData.requestBloodBag
+        this.RequestBloodData = RequestBloodData.requestBloodBags
         this.filteredRequestBloodData = [...this.RequestBloodData];
         console.log('RequestBloodData:', this.RequestBloodData);
       },

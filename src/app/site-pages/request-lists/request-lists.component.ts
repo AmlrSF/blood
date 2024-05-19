@@ -15,8 +15,9 @@ export class RequestListsComponent implements OnInit {
   filteredRequestBloodData: any[] = [];
   isDropdownOpen: boolean = false;
   private id: string = "";
-
   public setLoading: boolean = false;
+  patients: any[] = [];  // To store the patient data
+
   filters = [
     { id: 'filter-radio-example-1', value: 'last-day', label: 'Last day' },
     { id: 'filter-radio-example-2', value: 'last-7-days', label: 'Last 7 days' },
@@ -27,6 +28,7 @@ export class RequestListsComponent implements OnInit {
 
   public AddrequestBlood!: FormGroup;
   user: any;
+  selectedPatientId: any;
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private auth: AuthUserService) { }
 
@@ -40,8 +42,6 @@ export class RequestListsComponent implements OnInit {
     try {
       this.http.post(`http://localhost:3000/api/v1/customers/profile`, token).subscribe(
         (res: any) => {
-
-
           if (res.success) {
             if (res.customer.role == 1) {
               this.router.navigate(["admin"])
@@ -49,11 +49,7 @@ export class RequestListsComponent implements OnInit {
           }
 
           this.user = res.customer;
-
           console.log(this.user);
-
-
-
         }, (err: any) => {
           console.log(err);
         }
@@ -61,9 +57,12 @@ export class RequestListsComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+
     this.getRequestBloodData();
+    this.fetchPatients();
+
     this.AddrequestBlood = this.fb.group({
-      admissionNumber: ['', Validators.required],
+      passionNumber: ['', Validators.required],
       bloodType: ['', Validators.required],
       rhesus: ['', Validators.required],
       selectedPhenotypes: ['', Validators.required],
@@ -71,16 +70,16 @@ export class RequestListsComponent implements OnInit {
       product: ['', Validators.required],
       qualifications: ['', Validators.required],
       quantity: ['', Validators.required],
-      passionNumber:['', Validators.required]
+      
     });
   }
 
   getRequestBloodData(): void {
     this.http.get(this.apiUrl).subscribe(
       (RequestBloodData: any) => {
-        this.RequestBloodData = RequestBloodData.requestData;
+        this.RequestBloodData = RequestBloodData.requestData
         this.filteredRequestBloodData = [...this.RequestBloodData];
-        console.log('RequestBloodData:', this.RequestBloodData);
+        console.log('RequestBloodData:', this.RequestBloodData.filter((customer:any)=>customer.admissionNumber._id == this.user.admissionNumber._id));
       },
       (error: any) => {
         console.error('Error fetching RequestBloodData:', error);
@@ -88,14 +87,23 @@ export class RequestListsComponent implements OnInit {
     );
   }
 
-  public formatReadableDate(dateString: any) {
-    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
-
-    const date = new Date(dateString);
-
-    return date.toLocaleString('en-US', options);
+  fetchPatients(): void {
+    this.http.get('http://localhost:3000/api/v1/patient').subscribe(
+      (patients: any) => {
+        this.patients = patients;
+        console.log('Patients:', this.patients);
+      },
+      (error: any) => {
+        console.error('Error fetching patients:', error);
+      }
+    );
   }
 
+  public formatReadableDate(dateString: any) {
+    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', options);
+  }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -108,19 +116,21 @@ export class RequestListsComponent implements OnInit {
   }
 
   editRequestetBlood(user: any): void {
-    this.AddrequestBlood.patchValue({
-      admissionNumber: user?.admissionNumber,
-      bloodType: user?.bloodType,
-      rhesus: user?.rhesus,
-      emergencyDegree: user?.emergencyDegree,
-      product: user?.product,
-      qualifications: user?.qualifications,
-      quantity: user?.quantity,
-      passionNumber:user?.passionNumber
+    this.selectedPatientId = user?.passionNumber?._id || '';
+   this.AddrequestBlood.patchValue({
+       
+        bloodType: user?.bloodType,
+        rhesus: user?.rhesus,
+        emergencyDegree: user?.emergencyDegree,
+        product: user?.product,
+        qualifications: user?.qualifications,
+        quantity: user?.quantity,
+        passionNumber: user?.passionNumber
     });
     this.id = user._id;
     document.getElementById('editUserModal')?.classList.remove('hidden');
-  }
+}
+
 
   closeModel(): void {
     document.getElementById('editUserModal')?.classList.add('hidden');
@@ -151,7 +161,7 @@ export class RequestListsComponent implements OnInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     console.log(filterValue);
-    
+
     this.filteredRequestBloodData = this.RequestBloodData.filter(user =>
       (user.bloodType && user.bloodType.toLowerCase().includes(filterValue)) ||
       (user.rhesus && user.rhesus.toLowerCase().includes(filterValue)) ||
@@ -161,8 +171,7 @@ export class RequestListsComponent implements OnInit {
       (user.passionNumber && user.passionNumber.toLowerCase().includes(filterValue))
     );
   }
-  
-  
+
   selectedPhenotypes: string = ''; // Initialize selected phenotypes string
 
   // Method to update selected phenotypes string based on radio button selection
@@ -174,21 +183,20 @@ export class RequestListsComponent implements OnInit {
     }
   }
 
-  public ActivateRequestetBlood = (request: any) => {     
+  public ActivateRequestetBlood = (request: any) => {
     this.http.put(`${this.apiUrl}/${request._id}/Activaterequest`, {}).subscribe(
       (res: any) => {
-        
         if (res.success) {
           console.log(res)
           this.getRequestBloodData();
-        }else{
+        } else {
           alert(res.message);
         }
       }
     );
   }
 
-  public NavigateToTransfusionFile = (request:any)=>{
+  public NavigateToTransfusionFile = (request: any) => {
     this.router.navigate([`/TransfusionDetails/${request._id}`])
   }
 }

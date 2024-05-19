@@ -55,7 +55,7 @@
             </thead>
             <tbody>
                 <!-- Table Rows -->
-                <tr *ngFor="let request of filteredRequestBloodData" class="bg-white border-b hover:bg-gray-50">
+                <tr *ngFor="let request of filteredRequestBloodData.reverse()" class="bg-white border-b hover:bg-gray-50">
                     <td class="text-center p-4">
                         <div *ngIf="request?.requester?.userType==='blood bank'" class="
                         flex items-center gap-1 justify-center p-5 m-4">

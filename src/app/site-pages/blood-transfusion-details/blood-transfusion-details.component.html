@@ -19,32 +19,40 @@
     </div>
 
     <div class="min-h-[70vh]">
-        <h1 class="my-10 text-2xl font-medium text-center">Transfusion file of Passion [{{TransfusionFile?.passionNumber}}]</h1>
+        <h1 class="my-10 text-2xl font-medium text-center">Transfusion file of Passion 
+            [{{TransfusionFile?.passionNumber?.lastName}} {{TransfusionFile?.passionNumber?.firstName}}]</h1>
         <div *ngIf="TransfusionFile">
-            <p>Blood Type: {{ TransfusionFile.bloodType }}</p>
-            <p>Rhesus: {{ TransfusionFile.rhesus }}</p>
-            <p>Selected Phenotypes: {{ TransfusionFile.selectedPhenotypes }}</p>
-            <p>Emergency Degree: {{ TransfusionFile.emergencyDegree }}</p>
-            <p>Product: {{ TransfusionFile.product }}</p>
+            <!-- <div class=" border-r-[1.5px] flex items-center-center mb-10 gap-5 pr-8 border-[rgba(0,0,0,0.2)] ">
+                <img class="w-24 h-24 rounded-full"
+                    [src]="TransfusionFile?.admissionNumber?.profileImage ? TransfusionFile?.admissionNumber?.profileImage  : '../../assets/download.png'"
+                    alt="user photo">
+                <div class="text-xl font-medium">
+                    {{TransfusionFile?.admissionNumber?.lastName}}
+                    {{TransfusionFile?.admissionNumber?.firstName}}
+                </div>
+            </div> -->
+            <p>Blood Type: {{ TransfusionFile?.bloodType }}</p>
+            <p>Rhesus: {{ TransfusionFile?.rhesus }}</p>
+            <p>Selected Phenotypes: {{ TransfusionFile?.selectedPhenotypes }}</p>
+            <p>Emergency Degree: {{ TransfusionFile?.emergencyDegree }}</p>
+            <p>Product: {{ TransfusionFile?.product }}</p>
             <div>Qualifications:
-                <ul  *ngFor="let qualification of TransfusionFile.qualifications">
-                    <li class="text-[16px] my-5 font-semibold">{{ qualification }}</li>
+                <ul  *ngFor="let qualification of TransfusionFile?.qualifications">
+                    <li class="text-[16px] my-2 font-semibold">=> {{ qualification }}</li>
                 </ul>
             </div>
-            <p>Quantity: {{ TransfusionFile.quantity }}</p>
-            <p>Requested Date: {{ TransfusionFile.requestedDate | date }}</p>
-            <p>Status: {{ TransfusionFile.status ? 'Active' : 'Inactive' }}</p>
+            <p>Quantity: {{ TransfusionFile?.quantity }}</p>
+            <p>Requested Date: {{ TransfusionFile?.requestedDate | date }}</p>
+            <p>Status: {{ TransfusionFile?.status ? 'Active' : 'Inactive' }}</p>
             <div>Reserved Blood Bags:
                 <div class="bloodsbagsgrid">
-                    <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of TransfusionFile.reservedBloodBags">
+                    <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of TransfusionFile?.reservedBloodBags">
                         <div class="blood-element">
                             <p class="flex items-center justify-between"><span class="text-lg font-semibold">Type: {{
-                                    element.type }}</span> <span><i
+                                    element?.type }}</span> <span><i
                                         class="fa-solid text-3xl text-red-600 fa-droplet"></i></span></p>
-
-                            <p>Expire Date: {{ element.expireDate | date }}</p>
-                            
-                            <p>BagId: {{ element.BagId }}</p>
+                            <p>Expire Date: {{ element?.expireDate | date }}</p>
+                            <p>BagId: {{ element?.BagId }}</p>
                         </div>
                     </li>
                 </div>
