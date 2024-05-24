@@ -29,7 +29,8 @@
                 <select id="passionNumber" formControlName="passionNumber"
                     class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
                     <option value="">Select a patient</option>
-                    <option *ngFor="let patient of patients" [value]="patient._id">{{patient.id}} | {{patient.firstName}} {{patient.lastName}}</option>
+                    <option *ngFor="let patient of patients" [value]="patient._id">
+                        {{patient.id}} | {{patient.firstName}} {{patient.lastName}}</option>
                 </select>
             </div>
             <div class="mb-5">
