@@ -10,12 +10,13 @@ import { first } from 'rxjs';
   styleUrls: ['./list-clients.component.css']
 })
 export class ListClientsComponent implements OnInit {
-  private apiUrl:string = "http://localhost:3000/api/v1/customers"
+
+  private apiUrl: string = "http://localhost:3000/api/v1/customers"
   Users: any[] = [];
   filteredUsers: any[] = [];
   isDropdownOpen: boolean = false;
-  private id:string = "";
-  public setLoading:boolean=false;
+  private id: string = "";
+  public setLoading: boolean = false;
   filters = [
     { id: 'filter-radio-example-1', value: 'last-day', label: 'Last day' },
     { id: 'filter-radio-example-2', value: 'last-7-days', label: 'Last 7 days' },
@@ -29,12 +30,12 @@ export class ListClientsComponent implements OnInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  
+
   public addUser!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router:Router,private http : HttpClient) { }
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) { }
 
- 
+
 
   ngOnInit(): void {
     this.getUsers();
@@ -45,7 +46,7 @@ export class ListClientsComponent implements OnInit {
       password: ['', Validators.required],
       userType: ['', Validators.required]
     });
-  
+
   }
 
   getUsers(): void {
@@ -62,12 +63,12 @@ export class ListClientsComponent implements OnInit {
   }
   public formatReadableDate(dateString: any) {
     const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
-  
+
     const date = new Date(dateString);
-  
+
     return date.toLocaleString('en-US', options);
   }
-  
+
 
   viewUser(user: any): void {
     console.log('View user:', user);
@@ -81,29 +82,29 @@ export class ListClientsComponent implements OnInit {
 
   // Function to edit a user
   editUser(user: any): void {
-     // Assuming you have a form group for editing (edituserForm)
-     this.addUser.patchValue({
+    // Assuming you have a form group for editing (edituserForm)
+    this.addUser.patchValue({
       fname: user?.firstName,
       lname: user?.lastName,
       email: user?.email,
       password: user?.passwordHash,
       userType: user?.userType
-   });
+    });
 
-   this.id = user._id;
+    this.id = user._id;
 
-   // Show the modal
-   document.getElementById('editUserModal')?.classList.remove('hidden');
-   
+    // Show the modal
+    document.getElementById('editUserModal')?.classList.remove('hidden');
+
   }
 
-  public closeModel(){
+  public closeModel() {
     document.getElementById('editUserModal')?.classList.add('hidden');
   }
 
   // Function to delete a user
   deleteUser(user: any): void {
-    this.http.delete(`${this.apiUrl}/${user._id}`).subscribe((res:any)=>{
+    this.http.delete(`${this.apiUrl}/${user._id}`).subscribe((res: any) => {
       console.log(res);
       this.getUsers();
     })
@@ -112,21 +113,21 @@ export class ListClientsComponent implements OnInit {
   public submitForm(): void {
     if (this.addUser.valid) {
       const formData = {
-        firstName:this.addUser.value.fname,
-        passwordHash:this.addUser.value.password,
-        lastName:this.addUser.value.lname,
-        userType:this.addUser.value.userType,
-        email:this.addUser.value.email
-       }; // Convert FormGroup to a plain object
+        firstName: this.addUser.value.fname,
+        passwordHash: this.addUser.value.password,
+        lastName: this.addUser.value.lname,
+        userType: this.addUser.value.userType,
+        email: this.addUser.value.email
+      }; // Convert FormGroup to a plain object
 
-       
-       console.log(formData);
-       
+
+      console.log(formData);
+
 
       // Send formData to the server
       this.http.put(`${this.apiUrl}/${this.id}`, formData).subscribe(
         (res: any) => {
-          if(res.success){
+          if (res.success) {
             this.getUsers();
             this.closeModel();
             this.addUser.reset();
@@ -138,7 +139,7 @@ export class ListClientsComponent implements OnInit {
       console.log('Form is invalid. Please check the fields.');
     }
   }
-  
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
@@ -151,5 +152,17 @@ export class ListClientsComponent implements OnInit {
       (user?.userType && user.userType.toLowerCase().includes(filterValue))
     );
   }
+
+  ActivateUser(user: any) {
+    console.log(user?._id)
+    this.http.put(`${this.apiUrl}/${user?._id}`, { status : !user?.status }).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.getUsers();
   
+        }
+      }
+    );
+  }
+
 }

@@ -50,6 +50,7 @@
                     <th scope="col" class="text-center p-4">LastNamse</th>
                     <th scope="col" class="text-center p-4">Email</th>
                     <th scope="col" class="text-center p-4">user Type</th>
+                    <th scope="col" class="text-center p-4">Status</th>
                     <th scope="col" class="text-center p-4">Created At</th>
                     <th scope="col" class="text-center p-4">Action</th>
                 </tr>
@@ -61,8 +62,18 @@
                     <td class="text-center p-4">{{ User.lastName }}</td>
                     <td class="text-center p-4">{{ User.email }}</td>
                     <td class="text-center p-4">{{ User.userType }}</td>
+                    <td class="text-center p-4">   <div *ngIf="User.status" class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Active
+                    </div>
+                    <div *ngIf="!User.status" class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Inactive
+                    </div></td>
                     <td class="text-center p-4">{{ formatReadableDate(User.registrationDate) }}</td>
                     <td class="text-center p-4 justify-center flex gap-3">
+                        <button class="p-2 rounded-lg" [ngStyle]="{'background-color': User?.status ? '#4CAF50' : '#e6783c'}" (click)="ActivateUser(User)">
+                            <i [ngClass]="User?.status ? 'text-white font-bold fa-solid fa-check' : 'text-white font-bold fa-solid fa-xmark'"></i>
+                        </button>
+                        
                         <button class="p-2 rounded-lg bg-[#3C91E6]" (click)="viewUser(User)"><i
                                 class="text-white font-bold fa-solid fa-eye"></i></button>
                         <button class="p-2 rounded-lg bg-green-500" (click)="editUser(User)"><i
