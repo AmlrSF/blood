@@ -80,10 +80,13 @@ export class RequestListsComponent implements OnInit {
     this.http.get(this.apiUrl).subscribe(
       (RequestBloodData: any) => {
         this.RequestBloodData = RequestBloodData?.requestData;
-        console.log(this.user);
-        console.log(this.RequestBloodData.filter((item)=>item._id == this.user?._id))
-        this.filteredRequestBloodData = [...this.RequestBloodData];
-        // console.log('RequestBloodData:', this.RequestBloodData.filter((customer: any) => customer.admissionNumber._id == this.user.admissionNumber._id));
+        if(this.user?.userType === "admission"){
+          this.filteredRequestBloodData = [...this.RequestBloodData.filter((item)=>item?.admissionNumber?._id == this.user?._id)];
+        }else{
+          this.filteredRequestBloodData = [...this.RequestBloodData];
+        }
+        
+       
       },
       (error: any) => {
         console.error('Error fetching RequestBloodData:', error);
