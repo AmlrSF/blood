@@ -46,10 +46,14 @@ export class RequestListsComponent implements OnInit {
             if (res.customer.role == 1) {
               this.router.navigate(["admin"])
             }
+
+            this.getRequestBloodData();
+            this.fetchPatients();
+        
           }
 
           this.user = res.customer;
-          console.log(this.user);
+          //console.log(this.user);
         }, (err: any) => {
           console.log(err);
         }
@@ -58,9 +62,7 @@ export class RequestListsComponent implements OnInit {
       console.log(error);
     }
 
-    this.getRequestBloodData();
-    this.fetchPatients();
-
+  
     this.AddrequestBlood = this.fb.group({
       passionNumber: ['', Validators.required],
       bloodType: ['', Validators.required],
@@ -70,16 +72,18 @@ export class RequestListsComponent implements OnInit {
       product: ['', Validators.required],
       qualifications: ['', Validators.required],
       quantity: ['', Validators.required],
-      
+
     });
   }
 
   getRequestBloodData(): void {
     this.http.get(this.apiUrl).subscribe(
       (RequestBloodData: any) => {
-        this.RequestBloodData = RequestBloodData.requestData
+        this.RequestBloodData = RequestBloodData?.requestData;
+        console.log(this.user);
+        console.log(this.RequestBloodData.filter((item)=>item._id == this.user?._id))
         this.filteredRequestBloodData = [...this.RequestBloodData];
-        console.log('RequestBloodData:', this.RequestBloodData.filter((customer:any)=>customer.admissionNumber._id == this.user.admissionNumber._id));
+        // console.log('RequestBloodData:', this.RequestBloodData.filter((customer: any) => customer.admissionNumber._id == this.user.admissionNumber._id));
       },
       (error: any) => {
         console.error('Error fetching RequestBloodData:', error);
@@ -91,7 +95,7 @@ export class RequestListsComponent implements OnInit {
     this.http.get('http://localhost:3000/api/v1/patient').subscribe(
       (patients: any) => {
         this.patients = patients;
-        console.log('Patients:', this.patients);
+        // console.log('Patients:', this.patients);
       },
       (error: any) => {
         console.error('Error fetching patients:', error);
@@ -111,26 +115,47 @@ export class RequestListsComponent implements OnInit {
 
   viewRequestetBlood(user: any): void {
     console.log('View user:', user);
-    const userId = user._id;
+    const userId = user?._id;
     this.router.navigate(['/admin/RequestBloodData/user', userId]);
   }
 
   editRequestetBlood(user: any): void {
     this.selectedPatientId = user?.passionNumber?._id || '';
-   this.AddrequestBlood.patchValue({
-       
-        bloodType: user?.bloodType,
-        rhesus: user?.rhesus,
-        emergencyDegree: user?.emergencyDegree,
-        product: user?.product,
-        qualifications: user?.qualifications,
-        quantity: user?.quantity,
-        passionNumber: user?.passionNumber
+    this.AddrequestBlood.patchValue({
+
+      bloodType: user?.bloodType,
+      rhesus: user?.rhesus,
+      emergencyDegree: user?.emergencyDegree,
+      product: user?.product,
+      qualifications: user?.qualifications,
+      quantity: user?.quantity,
+      passionNumber: user?.passionNumber
     });
+    // Initialize the phenotypes
+    this.initializePhenotypes(user?.selectedPhenotypes);
+
     this.id = user._id;
     document.getElementById('editUserModal')?.classList.remove('hidden');
-}
+  }
 
+  initializePhenotypes(selectedPhenotypes: string): void {
+    this.selectedPhenotypeMap = {};
+    this.selectedPhenotypes = selectedPhenotypes || '';
+
+    if (this.selectedPhenotypes) {
+      const phenotypesArray = this.selectedPhenotypes.split(' ');
+      phenotypesArray.forEach(phenotype => {
+        const key = phenotype[0];
+        const value = phenotype.slice(1);
+        this.selectedPhenotypeMap[key] = phenotype;
+        // Set the radio button selection
+        const radioBtn = document.getElementById(`${key}${value === '+' ? 'Positive' : 'Negative'}`) as HTMLInputElement;
+        if (radioBtn) {
+          radioBtn.checked = true;
+        }
+      });
+    }
+  }
 
   closeModel(): void {
     document.getElementById('editUserModal')?.classList.add('hidden');
@@ -172,16 +197,17 @@ export class RequestListsComponent implements OnInit {
     );
   }
 
-  selectedPhenotypes: string = ''; // Initialize selected phenotypes string
+  selectedPhenotypes: string = '';
+  selectedPhenotypeMap: { [key: string]: string } = {};
 
   // Method to update selected phenotypes string based on radio button selection
   updateSelectedPhenotypes(phenotype: string, value: string): void {
-    if (value === 'Positive') {
-      this.selectedPhenotypes += `${phenotype}+`;
-    } else if (value === 'Negative') {
-      this.selectedPhenotypes += `${phenotype}-`;
-    }
+    this.selectedPhenotypeMap[phenotype] = value === 'Positive' ? `${phenotype}+` : `${phenotype}-`;
+
+    // Reconstruct the selectedPhenotypes string
+    this.selectedPhenotypes = Object.values(this.selectedPhenotypeMap).join(' ');
   }
+
 
   public ActivateRequestetBlood = (request: any) => {
     this.http.put(`${this.apiUrl}/${request._id}/Activaterequest`, {}).subscribe(

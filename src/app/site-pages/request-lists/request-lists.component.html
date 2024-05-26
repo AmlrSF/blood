@@ -108,15 +108,15 @@
                     </td>
                     <td class="text-center p-4 justify-center flex gap-2">
                        
-                        <button *ngIf="user.userType === 'blood bank' && request.status==true"     
+                        <button *ngIf="user?.userType === 'blood bank' && request.status==true"     
                         class="p-2 rounded-lg bg-[#3C91E6] text-white font-medium"
                         (click)="ActivateRequestetBlood(request)">
-                            desactivate
+                            delivered
                         </button>
-                        <button *ngIf="user.userType === 'blood bank' && request.status== false"     
+                        <button *ngIf="user?.userType === 'blood bank' && request.status== false"     
                         class="p-2 rounded-lg bg-[#3C91E6] text-white font-medium"
                         (click)="ActivateRequestetBlood(request)">
-                            activate
+                            respond
                         </button>
                        
                         <div *ngIf="request.status&&user?.userType==='admission'"

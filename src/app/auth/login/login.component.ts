@@ -12,6 +12,7 @@ import { AuthUserService } from 'src/app/services/auth/auth-user.service';
 export class LoginComponent implements OnInit{
   public loginForm: FormGroup;
   private apiUrl = 'http://localhost:3000/api/v1/customers/login';
+  costumer: any;
 
   constructor(private auth:AuthUserService,private router: Router, private fb: FormBuilder, private http: HttpClient) {
     this.loginForm = this.fb.group({
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit{
     try {
       this.http.post(`http://localhost:3000/api/v1/customers/profile`,token).subscribe(
         (res:any)=>{
-        
+          this.costumer = res.customer;
           if(res.success ==  true) {
             if(res.customer.role == 1){
               this.router.navigate(["admin"] )
@@ -68,6 +69,8 @@ export class LoginComponent implements OnInit{
           console.log('Login successful:', response);
 
           if (response.token && response.message == "Login successful") {
+
+            if(!response.customer?.status) return alert('you account needs to be verified !\n wait for admin approval')
 
             this.auth.setToken(response.token)
 

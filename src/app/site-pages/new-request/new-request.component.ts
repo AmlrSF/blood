@@ -13,19 +13,18 @@ export class NewRequestComponent implements OnInit {
   AddrequestBlood!: FormGroup;
   setLoading: boolean = false;
   selectedPhenotypes: string = '';
+  selectedPhenotypeMap: { [key: string]: string } = {};
   private apiUrl: string = "http://localhost:3000/api/v1/requestBloodByAdmission";
   addmissionId: any = '';
   patients: any[] = [];  // To store the patient data
 
   constructor(private auth: AuthUserService, private fb: FormBuilder, private http: HttpClient, private router: Router) { }
 
-  // Method to update selected phenotypes string based on radio button selection
   updateSelectedPhenotypes(phenotype: string, value: string): void {
-    if (value === 'Positive') {
-      this.selectedPhenotypes += `${phenotype}+`;
-    } else if (value === 'Negative') {
-      this.selectedPhenotypes += `${phenotype}-`;
-    }
+    this.selectedPhenotypeMap[phenotype] = value === 'Positive' ? `${phenotype}+` : `${phenotype}-`;
+    
+    // Reconstruct the selectedPhenotypes string
+    this.selectedPhenotypes = Object.values(this.selectedPhenotypeMap).join(' ');
   }
 
   ngOnInit(): void {
@@ -90,7 +89,10 @@ export class NewRequestComponent implements OnInit {
     this.http.post(this.apiUrl, formData).subscribe(
       (res: any) => {
         this.AddrequestBlood.reset();
+        this.selectedPhenotypes = '';
+        this.selectedPhenotypeMap = {};
         this.setLoading = false;
+
       }
     );
   }

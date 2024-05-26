@@ -69,75 +69,61 @@
                     <div class="mb-2 flex gap-5">
                         <label class="block mb-2 text-xl font-medium text-gray-900 ">C</label>
                         <div class="flex items-center space-x-4">
-                            <input type="radio" id="CPositive" name="C" value="Positive"
-                                (change)="updateSelectedPhenotypes('C', 'Positive')">
+                            <input type="radio" id="CPositive" name="C" value="Positive" (change)="updateSelectedPhenotypes('C', 'Positive')">
                             <label for="CPositive">Positive</label>
-                            <input type="radio" id="CNegative" name="C" value="Negative"
-                                (change)="updateSelectedPhenotypes('C', 'Negative')">
+                            <input type="radio" id="CNegative" name="C" value="Negative" (change)="updateSelectedPhenotypes('C', 'Negative')">
                             <label for="CNegative">Negative</label>
                         </div>
                     </div>
-
-                    <!-- Radio buttons for c -->
+            
                     <div class="mb-2 flex gap-5">
                         <label class="block mb-2 text-xl font-medium text-gray-900">c</label>
                         <div class="flex items-center space-x-4">
-                            <input type="radio" id="cPositive" name="c" value="Positive"
-                                (change)="updateSelectedPhenotypes('c', 'Positive')">
+                            <input type="radio" id="cPositive" name="c" value="Positive" (change)="updateSelectedPhenotypes('c', 'Positive')">
                             <label for="cPositive">Positive</label>
-                            <input type="radio" id="cNegative" name="c" value="Negative"
-                                (change)="updateSelectedPhenotypes('c', 'Negative')">
+                            <input type="radio" id="cNegative" name="c" value="Negative" (change)="updateSelectedPhenotypes('c', 'Negative')">
                             <label for="cNegative">Negative</label>
                         </div>
                     </div>
-
-                    <!-- Radio buttons for E -->
+            
                     <div class="mb-2 flex gap-5">
                         <label class="block mb-2 text-xl font-medium text-gray-900">E</label>
                         <div class="flex items-center space-x-4">
-                            <input type="radio" id="EPositive" name="E" value="Positive"
-                                (change)="updateSelectedPhenotypes('E','Positive')">
+                            <input type="radio" id="EPositive" name="E" value="Positive" (change)="updateSelectedPhenotypes('E','Positive')">
                             <label for="EPositive">Positive</label>
-                            <input type="radio" id="ENegative" name="E" value="Negative"
-                                (change)="updateSelectedPhenotypes('E', 'Negative')">
+                            <input type="radio" id="ENegative" name="E" value="Negative" (change)="updateSelectedPhenotypes('E', 'Negative')">
                             <label for="ENegative">Negative</label>
                         </div>
                     </div>
-
-                    <!-- Radio buttons for e -->
+            
                     <div class="mb-2 flex gap-5">
                         <label class="block mb-2 text-xl font-medium text-gray-900">e</label>
                         <div class="flex items-center space-x-4">
-                            <input type="radio" id="ePositive" name="e" value="Positive"
-                                (change)="updateSelectedPhenotypes('e', 'Positive')">
+                            <input type="radio" id="ePositive" name="e" value="Positive" (change)="updateSelectedPhenotypes('e', 'Positive')">
                             <label for="ePositive">Positive</label>
-                            <input type="radio" id="eNegative" name="e" value="Negative"
-                                (change)="updateSelectedPhenotypes('e', 'Negative')">
+                            <input type="radio" id="eNegative" name="e" value="Negative" (change)="updateSelectedPhenotypes('e', 'Negative')">
                             <label for="eNegative">Negative</label>
                         </div>
                     </div>
-
-                    <!-- Radio buttons for K -->
+            
                     <div class="mb-2 flex gap-5">
                         <label class="block mb-2 text-xl font-medium text-gray-900">K</label>
                         <div class="flex items-center space-x-4">
-                            <input type="radio" id="kPositive" name="k" value="Positive"
-                                (change)="updateSelectedPhenotypes('K', 'Positive')">
+                            <input type="radio" id="kPositive" name="k" value="Positive" (change)="updateSelectedPhenotypes('K', 'Positive')">
                             <label for="kPositive">Positive</label>
-                            <input type="radio" id="kNegative" name="k" value="Negative"
-                                (change)="updateSelectedPhenotypes('K', 'Negative')">
+                            <input type="radio" id="kNegative" name="k" value="Negative" (change)="updateSelectedPhenotypes('K', 'Negative')">
                             <label for="kNegative">Negative</label>
                         </div>
                     </div>
                 </div>
-
-                <!-- Selected Phenotypes -->
-
+            
                 <div class="flex flex-col gap-3">
                     <h1 class="text-xl font-medium">Selected phenotypes</h1>
-                    <p class="block  text-lg font-medium text-gray-900">{{selectedPhenotypes}}</p>
+                    <p class="block text-lg font-medium text-gray-900">{{selectedPhenotypes}}</p>
                 </div>
             </div>
+            
+
             <!-- Emergency Degree -->
             <div class="mb-2">
                 <label for="emergencyDegree" class="block mb-2 text-sm font-medium text-gray-900">Emergency
