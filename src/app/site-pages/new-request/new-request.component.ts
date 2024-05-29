@@ -17,7 +17,7 @@ export class NewRequestComponent implements OnInit {
   private apiUrl: string = "http://localhost:3000/api/v1/requestBloodByAdmission";
   addmissionId: any = '';
   patients: any[] = [];  // To store the patient data
-  patient: any;
+  
 
   constructor(private auth: AuthUserService, private fb: FormBuilder, private http: HttpClient, private router: Router) { }
 
@@ -68,7 +68,7 @@ export class NewRequestComponent implements OnInit {
 
 
     this.AddrequestBlood = this.fb.group({
-      admissionNumber: ['',],
+      admissionNumber: [''],
       bloodType: ['', Validators.required],
       rhesus: ['', Validators.required],
       selectedPhenotypes: [''],
@@ -76,7 +76,7 @@ export class NewRequestComponent implements OnInit {
       product: ['', Validators.required],
       qualifications: ['', Validators.required],
       quantity: ['', Validators.required],
-      passionNumber: ["", Validators.required, Validators.pattern(/^-?\d+$/)]
+      passionNumber: ["", Validators.required]
     });
   }
 
@@ -87,9 +87,24 @@ export class NewRequestComponent implements OnInit {
     // For example, validating the number or performing calculations
   }
 
+  patient :any;
+
   submitForm() {
     this.AddrequestBlood.value["admissionNumber"] = this.addmissionId;
     this.AddrequestBlood.value["selectedPhenotypes"] = this.selectedPhenotypes;
+   
+    this.patient = this.patients.find(patient => patient.id ==  this.AddrequestBlood.value["passionNumber"]);
+    
+
+    if(this.patient){
+      this.AddrequestBlood.value["passionNumber"] = this.patient?._id;
+    }else{
+      alert('Patient with passion number ' + this.AddrequestBlood.value["passionNumber"] + ' not found.');
+    }
+    
+
+
+
     this.setLoading = true;
     const formData = this.AddrequestBlood.value;
 
@@ -111,9 +126,9 @@ export class NewRequestComponent implements OnInit {
   selectedPatient: any;
   public getRelatedInfo() {
     const passionNumber = this.AddrequestBlood.get('passionNumber')?.value;
-
     if (passionNumber) {
       this.selectedPatient = this.patients.find(patient => patient.id == passionNumber);
+      this.AddrequestBlood.value["passionNumber"] = this.selectedPatient._id;
 
       if (!this.selectedPatient) {
         alert('Patient with passion number ' + passionNumber + ' not found.');

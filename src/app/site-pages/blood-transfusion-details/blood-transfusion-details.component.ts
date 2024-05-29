@@ -12,6 +12,7 @@ export class BloodTransfusionDetailsComponent implements OnInit {
   private baseUrl = 'http://localhost:3000/api/v1/requestBloodByAdmission'; 
 
   public TransfusionFile: any;
+  setloading: boolean = false;
   constructor( private router : Router,private route: ActivatedRoute
     ,private http:HttpClient) {}
 
@@ -23,8 +24,33 @@ export class BloodTransfusionDetailsComponent implements OnInit {
     return date.toLocaleString('en-US', options);
   }
 
+ 
+  public transfuse(){
+     // Get the client ID from the route parameters
+     const requestID = this.route.snapshot.paramMap.get('id');
 
-  
+     // Check if requestID is available
+     if (requestID) {
+       // Call the service to get client details by ID
+     
+     } else {
+       console.error('Client ID not found in route parameters.');
+     }
+ 
+     this.setloading = true;
+     this.http.delete(`${this.baseUrl}/${requestID}/transfuse`).subscribe(
+       (res:any)=>{
+        this.setloading = false;
+        this.router.navigate(["/requests-list"])
+        
+         
+         
+       },(err:any)=>{
+         console.log(err);
+         
+       }
+     )
+  }
 
   ngOnInit(): void {
 
@@ -46,7 +72,7 @@ export class BloodTransfusionDetailsComponent implements OnInit {
         console.log(res)
         this.TransfusionFile = res.requestData;
         console.log(this.TransfusionFile);
-        
+      
         
       },(err:any)=>{
         console.log(err);
