@@ -21,171 +21,204 @@
             <span class="text">requests List</span>
         </a>
     </div>
-    <form [formGroup]="AddrequestBlood" (ngSubmit)="submitForm()">
-        <div class="max-w-lg mx-auto pb-10">
-            <h1 class="text-3xl my-7 text-center"> new Request</h1>
-            <div class="mb-5">
-                <label for="passionNumber" class="block mb-2 text-sm font-medium text-gray-900">Passion Number</label>
-                <select id="passionNumber" formControlName="passionNumber"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="">Select a patient</option>
-                    <option *ngFor="let patient of patients" [value]="patient._id">
-                        {{patient.id}} | {{patient.firstName}} {{patient.lastName}}</option>
-                </select>
-            </div>
-            <div class="mb-5">
-                <label for="rhesus" class="block mb-2 text-sm font-medium text-gray-900">Blood Type</label>
-                <select id="bloodType" formControlName="bloodType"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="">Select Blood Type</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="O">O</option>
-                    <option value="AB">AB</option>
-                </select>
-                
-            </div>
-            <div class="mb-2">
-                <label for="rhesus" class="block mb-2 text-sm font-medium text-gray-900">Rhesus</label>
-              
+    <div class="flex justify-center gap-10">
+        <form [formGroup]="AddrequestBlood" (ngSubmit)="submitForm()">
+            <div class="max-w-lg mx-auto pb-10">
+                <h1 class="text-3xl my-7 text-center"> new Request</h1>
+    
+                <div class="mb-2">
+                    <label for="passionNumber" class="block mb-2 text-sm font-medium
+                     text-gray-900">Passion Number</label>
+                    <div class="flex justify-center items-center gap-2">
+                        <input type="text" id="passionNumber" 
+                        formControlName="passionNumber"  class="flex-1 shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+    
+                        <button type="button" class="text-white  w-[100px] bg-[#3C91E6] hover:bg-blue--2800 
+                    focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium 
+                    rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#3C91E6]
+                     dark:hover:bg-[#3C91E6] dark:focus:ring-[#3C91E6]" (click)="getRelatedInfo()">
+                            Get Info
+                        </button>
+                        <button type="button" class="text-white  w-[100px] bg-[#3C91E6] hover:bg-blue--2800 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium 
+                        rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#3C91E6]
+                         dark:hover:bg-[#3C91E6] dark:focus:ring-[#3C91E6]" (click)="ClearInfo()">
+                                Clear
+                            </button>
+                    </div>
+    
+                </div>
+                <div class="mb-5">
+                    <label for="rhesus" class="block mb-2 text-sm font-medium text-gray-900">Blood Type</label>
+                    <select id="bloodType" formControlName="bloodType"
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                        <option value="">Select Blood Type</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="O">O</option>
+                        <option value="AB">AB</option>
+                    </select>
+    
+                </div>
+                <div class="mb-2">
+                    <label for="rhesus" class="block mb-2 text-sm font-medium text-gray-900">Rhesus</label>
+    
                     <select id="bloodType" formControlName="rhesus"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="">Select Rhesus Factor</option>
-                    <option value="-">-</option>
-                    <option value="+">+</option>
-                </select>
-              
-            </div>
-            <!-- Quantity -->
-            <div class="mb-2">
-                <label for="quantity" class="block mb-2
-                 text-sm font-medium text-gray-900">Quantity</label>
-                <input type="number" id="quantity" formControlName="quantity"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-            </div>
-            <!-- Radio buttons for C -->
-            <div class="flex items-center gap-10">
-                <div>
-                    <div class="mb-2 flex gap-5">
-                        <label class="block mb-2 text-xl font-medium text-gray-900 ">C</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="radio" id="CPositive" name="C" value="Positive" (change)="updateSelectedPhenotypes('C', 'Positive')">
-                            <label for="CPositive">Positive</label>
-                            <input type="radio" id="CNegative" name="C" value="Negative" (change)="updateSelectedPhenotypes('C', 'Negative')">
-                            <label for="CNegative">Negative</label>
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                        <option value="">Select Rhesus Factor</option>
+                        <option value="-">-</option>
+                        <option value="+">+</option>
+                    </select>
+    
+                </div>
+                <!-- Quantity -->
+                <div class="mb-2">
+                    <label for="quantity" class="block mb-2
+                     text-sm font-medium text-gray-900">Quantity</label>
+                    <input type="number" id="quantity" formControlName="quantity"
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                </div>
+                <!-- Radio buttons for C -->
+                <div class="flex items-center gap-10">
+                    <div>
+                        <div class="mb-2 flex gap-5">
+                            <label class="block mb-2 text-xl font-medium text-gray-900 ">C</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="radio" id="CPositive" name="C" value="Positive"
+                                    (change)="updateSelectedPhenotypes('C', 'Positive')">
+                                <label for="CPositive">Positive</label>
+                                <input type="radio" id="CNegative" name="C" value="Negative"
+                                    (change)="updateSelectedPhenotypes('C', 'Negative')">
+                                <label for="CNegative">Negative</label>
+                            </div>
+                        </div>
+    
+                        <div class="mb-2 flex gap-5">
+                            <label class="block mb-2 text-xl font-medium text-gray-900">c</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="radio" id="cPositive" name="c" value="Positive"
+                                    (change)="updateSelectedPhenotypes('c', 'Positive')">
+                                <label for="cPositive">Positive</label>
+                                <input type="radio" id="cNegative" name="c" value="Negative"
+                                    (change)="updateSelectedPhenotypes('c', 'Negative')">
+                                <label for="cNegative">Negative</label>
+                            </div>
+                        </div>
+    
+                        <div class="mb-2 flex gap-5">
+                            <label class="block mb-2 text-xl font-medium text-gray-900">E</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="radio" id="EPositive" name="E" value="Positive"
+                                    (change)="updateSelectedPhenotypes('E','Positive')">
+                                <label for="EPositive">Positive</label>
+                                <input type="radio" id="ENegative" name="E" value="Negative"
+                                    (change)="updateSelectedPhenotypes('E', 'Negative')">
+                                <label for="ENegative">Negative</label>
+                            </div>
+                        </div>
+    
+                        <div class="mb-2 flex gap-5">
+                            <label class="block mb-2 text-xl font-medium text-gray-900">e</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="radio" id="ePositive" name="e" value="Positive"
+                                    (change)="updateSelectedPhenotypes('e', 'Positive')">
+                                <label for="ePositive">Positive</label>
+                                <input type="radio" id="eNegative" name="e" value="Negative"
+                                    (change)="updateSelectedPhenotypes('e', 'Negative')">
+                                <label for="eNegative">Negative</label>
+                            </div>
+                        </div>
+    
+                        <div class="mb-2 flex gap-5">
+                            <label class="block mb-2 text-xl font-medium text-gray-900">K</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="radio" id="kPositive" name="k" value="Positive"
+                                    (change)="updateSelectedPhenotypes('K', 'Positive')">
+                                <label for="kPositive">Positive</label>
+                                <input type="radio" id="kNegative" name="k" value="Negative"
+                                    (change)="updateSelectedPhenotypes('K', 'Negative')">
+                                <label for="kNegative">Negative</label>
+                            </div>
                         </div>
                     </div>
-            
-                    <div class="mb-2 flex gap-5">
-                        <label class="block mb-2 text-xl font-medium text-gray-900">c</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="radio" id="cPositive" name="c" value="Positive" (change)="updateSelectedPhenotypes('c', 'Positive')">
-                            <label for="cPositive">Positive</label>
-                            <input type="radio" id="cNegative" name="c" value="Negative" (change)="updateSelectedPhenotypes('c', 'Negative')">
-                            <label for="cNegative">Negative</label>
-                        </div>
-                    </div>
-            
-                    <div class="mb-2 flex gap-5">
-                        <label class="block mb-2 text-xl font-medium text-gray-900">E</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="radio" id="EPositive" name="E" value="Positive" (change)="updateSelectedPhenotypes('E','Positive')">
-                            <label for="EPositive">Positive</label>
-                            <input type="radio" id="ENegative" name="E" value="Negative" (change)="updateSelectedPhenotypes('E', 'Negative')">
-                            <label for="ENegative">Negative</label>
-                        </div>
-                    </div>
-            
-                    <div class="mb-2 flex gap-5">
-                        <label class="block mb-2 text-xl font-medium text-gray-900">e</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="radio" id="ePositive" name="e" value="Positive" (change)="updateSelectedPhenotypes('e', 'Positive')">
-                            <label for="ePositive">Positive</label>
-                            <input type="radio" id="eNegative" name="e" value="Negative" (change)="updateSelectedPhenotypes('e', 'Negative')">
-                            <label for="eNegative">Negative</label>
-                        </div>
-                    </div>
-            
-                    <div class="mb-2 flex gap-5">
-                        <label class="block mb-2 text-xl font-medium text-gray-900">K</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="radio" id="kPositive" name="k" value="Positive" (change)="updateSelectedPhenotypes('K', 'Positive')">
-                            <label for="kPositive">Positive</label>
-                            <input type="radio" id="kNegative" name="k" value="Negative" (change)="updateSelectedPhenotypes('K', 'Negative')">
-                            <label for="kNegative">Negative</label>
-                        </div>
+    
+                    <div class="flex flex-col gap-3">
+                        <h1 class="text-xl font-medium">Selected phenotypes</h1>
+                        <p class="block text-lg font-medium text-gray-900">{{selectedPhenotypes}}</p>
                     </div>
                 </div>
-            
-                <div class="flex flex-col gap-3">
-                    <h1 class="text-xl font-medium">Selected phenotypes</h1>
-                    <p class="block text-lg font-medium text-gray-900">{{selectedPhenotypes}}</p>
+    
+    
+                <!-- Emergency Degree -->
+                <div class="mb-2">
+                    <label for="emergencyDegree" class="block mb-2 text-sm font-medium text-gray-900">Emergency
+                        Degree</label>
+                    <select id="emergencyDegree" formControlName="emergencyDegree"
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                        <option value="true">Urgent</option>
+                        <option value="false">Not Uregent</option>
+                    </select>
                 </div>
+                <!-- Product -->
+                <div class="mb-2">
+                    <label for="product" class="block mb-2 text-sm font-medium text-gray-900">Product</label>
+                    <select id="product" formControlName="product"
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                        <option value="Concentré de globules rouges (PR-001)">Concentré de globules rouges (PR-001)</option>
+                        <option value="Concentré standard de plaquettes (PR-002)">Concentré standard de plaquettes (PR-002)
+                        </option>
+                        <option value="Concentré plaquettaire d'aphérèse (PR-003)">Concentré plaquettaire d'aphérèse
+                            (PR-003)</option>
+                        <option value="Plasma Frais Congelé (PR-004)">Plasma Frais Congelé (PR-004)</option>
+                        <option value="Plasma dépourvu (PR-005)">Plasma dépourvu (PR-005)</option>
+                        <option value="Cryoprécipité (PR-007)">Cryoprécipité (PR-007)</option>
+                    </select>
+                </div>
+                <!-- Qualifications -->
+                <!-- Qualifications -->
+                <div class="mb-2">
+                    <label for="qualifications" class="block mb-2 text-sm font-medium text-gray-900">Qualifications</label>
+                    <select id="qualifications" formControlName="qualifications" multiple
+                        class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
+                        <option value="Phénotype(Q-001)">Phénotype(Q-001)</option>
+                        <option value="Deuleucyté(Q-002)">Deuleucyté(Q-002)</option>
+                        <option value="Irradié(Q-003)">Irradié(Q-003)</option>
+                        <option value="Deplasmatisé(Q-004)">Deplasmatisé(Q-004)</option>
+                        <option value="Fractionné(Q-005)">Fractionné(Q-005)</option>
+                        <option value="Compatibilisé(Q-006)">Compatibilisé(Q-006)</option>
+                    </select>
+                </div>
+                <!-- Display Selected Qualifications -->
+                <div *ngIf="!setLoading && AddrequestBlood.valid">
+                    <h2 class="text-xl font-medium my-4">Selected Qualifications</h2>
+                    <table class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="border border-gray-300 px-4 py-2">Qualification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let qualification of AddrequestBlood.value.qualifications"
+                                class="border border-gray-300">
+                                <td class="border border-gray-300 px-4 py-2">{{ qualification }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
+    
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="text-white w-full bg-[#fd3a36] hover:bg-blue--2800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#fd3a36] dark:hover:bg-[#fd3a36] dark:focus:ring-[#fd3a36]">{{setLoading
+                    ? "Wait for Sending a request" : "new Request"}}</button>
             </div>
-            
-
-            <!-- Emergency Degree -->
-            <div class="mb-2">
-                <label for="emergencyDegree" class="block mb-2 text-sm font-medium text-gray-900">Emergency
-                    Degree</label>
-                <select id="emergencyDegree" formControlName="emergencyDegree"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="true">Urgent</option>
-                    <option value="false">Not Uregent</option>
-                </select>
-            </div>
-            <!-- Product -->
-            <div class="mb-2">
-                <label for="product" class="block mb-2 text-sm font-medium text-gray-900">Product</label>
-                <select id="product" formControlName="product"
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="Concentré de globules rouges (PR-001)">Concentré de globules rouges (PR-001)</option>
-                    <option value="Concentré standard de plaquettes (PR-002)">Concentré standard de plaquettes (PR-002)
-                    </option>
-                    <option value="Concentré plaquettaire d'aphérèse (PR-003)">Concentré plaquettaire d'aphérèse
-                        (PR-003)</option>
-                    <option value="Plasma Frais Congelé (PR-004)">Plasma Frais Congelé (PR-004)</option>
-                    <option value="Plasma dépourvu (PR-005)">Plasma dépourvu (PR-005)</option>
-                    <option value="Cryoprécipité (PR-007)">Cryoprécipité (PR-007)</option>
-                </select>
-            </div>
-            <!-- Qualifications --> 
-            <!-- Qualifications -->
-            <div class="mb-2">
-                <label for="qualifications" class="block mb-2 text-sm font-medium text-gray-900">Qualifications</label>
-                <select id="qualifications" formControlName="qualifications" multiple
-                    class="shadow-sm bg-gray-50 border-2 border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg focus:ring-[#fd3a36] focus:border-[#fd3a36] block w-full p-2.5">
-                    <option value="Phénotype(Q-001)">Phénotype(Q-001)</option>
-                    <option value="Deuleucyté(Q-002)">Deuleucyté(Q-002)</option>
-                    <option value="Irradié(Q-003)">Irradié(Q-003)</option>
-                    <option value="Deplasmatisé(Q-004)">Deplasmatisé(Q-004)</option>
-                    <option value="Fractionné(Q-005)">Fractionné(Q-005)</option>
-                    <option value="Compatibilisé(Q-006)">Compatibilisé(Q-006)</option>
-                </select>
-            </div>
-            <!-- Display Selected Qualifications -->
-            <div *ngIf="!setLoading && AddrequestBlood.valid">
-                <h2 class="text-xl font-medium my-4">Selected Qualifications</h2>
-                <table class="w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border border-gray-300 px-4 py-2">Qualification</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let qualification of AddrequestBlood.value.qualifications"
-                            class="border border-gray-300">
-                            <td class="border border-gray-300 px-4 py-2">{{ qualification }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <!-- Submit Button -->
-            <button type="submit"
-                class="text-white w-full bg-[#fd3a36] hover:bg-blue--2800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#fd3a36] dark:hover:bg-[#fd3a36] dark:focus:ring-[#fd3a36]">{{setLoading
-                ? "Wait for Sending a request" : "new Request"}}</button>
+        </form>
+        <div *ngIf="selectedPatient">
+            <ul>
+                <li>Full Name : {{selectedPatient.firstName}} {{selectedPatient.lastName}}</li>
+                <li>Gender : {{selectedPatient.sex}}</li>
+                <li>Birth Date: {{formatReadableDate(selectedPatient.birthDate)}}</li>
+            </ul>
         </div>
-    </form>
+    </div>
 </main>

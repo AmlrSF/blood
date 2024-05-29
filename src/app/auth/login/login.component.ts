@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit{
           // Handle successful response
           console.log('Login successful:', response);
 
-          if (response.token && response.message == "Login successful") {
+          if (response.success && response.token && response.message == "Login successful") {
 
             if(!response.customer?.status) return alert('you account needs to be verified !\n wait for admin approval')
 
@@ -76,6 +76,8 @@ export class LoginComponent implements OnInit{
 
             // Optionally, you can navigate to another page on success
             this.router.navigate(['/admin']);
+          }else{
+            alert(response.error)
           }
         },
         (error) => {
@@ -87,7 +89,7 @@ export class LoginComponent implements OnInit{
       );
     } else {
       // Handle form validation errors
-      console.log('Form is invalid. Please check the fields.');
+      alert('Form is invalid. Please check the fields.');
     }
   }
 }
