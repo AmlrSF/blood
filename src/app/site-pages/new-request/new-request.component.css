@@ -37,3 +37,16 @@
     grid-gap: 10px;
     font-weight: 500;
   }
+
+  .sletetedPatient::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 5px;
+    width: 0; 
+    height: 0; 
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent; 
+    
+    border-right:15px solid #fff;
+}

@@ -30,6 +30,8 @@ export class NavbarComponent implements OnInit {
             this.router.navigate(["Login"]);
           }
 
+          console.log(res)
+
           this.customer = res.customer;
 
 

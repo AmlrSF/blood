@@ -128,16 +128,17 @@ export class NewRequestComponent implements OnInit {
     const passionNumber = this.AddrequestBlood.get('passionNumber')?.value;
     if (passionNumber) {
       this.selectedPatient = this.patients.find(patient => patient.id == passionNumber);
-      this.AddrequestBlood.value["passionNumber"] = this.selectedPatient._id;
-
       if (!this.selectedPatient) {
         alert('Patient with passion number ' + passionNumber + ' not found.');
       }
+      this.AddrequestBlood.value["passionNumber"] = this.selectedPatient._id;
+
+     
     }
   }
 
   public ClearInfo(){
-    this.AddrequestBlood.value["admissionNumber"] = "";
+    this.AddrequestBlood.value["passionNumber"] = "";
     this.selectedPatient = null;
 
   }

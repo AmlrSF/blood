@@ -29,6 +29,10 @@ export class SiteNavbarComponent  implements OnInit{
       this.http.post(`http://localhost:3000/api/v1/customers/profile`, token).subscribe(
         (res: any) => {
           
+          if (!res.success) {
+            this.router.navigate(["/"]);
+          }
+
 
           if(res.success){
             if(res.customer.role == 1){

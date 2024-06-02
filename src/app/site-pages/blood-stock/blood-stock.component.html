@@ -38,18 +38,27 @@
                     </button>
                 </div>
                 <ul class="bloodsbagsgrid my-5">
-                    <li class="bg-[#D9D9D9] p-4 rounded-lg" *ngFor="let element of product.elements">
+                    <li *ngFor="let element of product.elements" 
+                        [ngClass]="{'bg-red-200': isExpired(element.expireDate), 'bg-[#D9D9D9]': !isExpired(element.expireDate)}" 
+                        class="p-4 rounded-lg">
                         <div class="blood-element">
-                            <p class="flex items-center justify-between"><span class="text-lg font-semibold">Type: {{
-                                    element.type }}</span> <span><i
-                                        class="fa-solid text-3xl text-red-600 fa-droplet"></i></span></p>
-
+                            <p class="flex items-center justify-between">
+                                <span class="text-lg font-semibold">Type: {{ element.type }}</span>
+                                <span>
+                                    <i class="fa-solid text-3xl text-red-600 fa-droplet"></i>
+                                </span>
+                            </p>
                             <p>Expire Date: {{ element.expireDate | date }}</p>
                             <p>Status: {{ element.status }}</p>
-                            <p>BagId: {{ element.BagId }}</p>           
+                            <p>BagId: {{ element.BagId }}</p>
+                            <div *ngIf="isExpired(element.expireDate)" class="flex justify-between items-center mt-5" >
+                                <p class="text-red-600 font-bold">Expired</p>
+                                <button (click)="deleteBag(element._id)" class="bg-red-500 text-white p-2 rounded">Delete</button>
+                            </div>
                         </div>
                     </li>
                 </ul>
+                
             </div>
         </div>
 

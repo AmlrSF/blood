@@ -21,14 +21,7 @@ export class BloodStockComponent implements OnInit {
   constructor(private fb: FormBuilder,private router:Router, private http:HttpClient,private auth:AuthUserService) { }
 
   ngOnInit() { 
-    this.http.get<any[]>(this.apiUrl).subscribe(
-      (response: any) => {
-        this.productsWithElements = this.groupByProduct(response.data);
-      },
-      (error: any) => {
-        console.error('Error fetching blood bags:', error);
-      }
-    );
+    this.getbloodsBags();
     let token = {
       token: this.auth.getToken()
     };
@@ -66,6 +59,17 @@ export class BloodStockComponent implements OnInit {
     });
   }
 
+  public getbloodsBags(){
+    this.http.get<any[]>(this.apiUrl).subscribe(
+      (response: any) => {
+        this.productsWithElements = this.groupByProduct(response.data);
+      },
+      (error: any) => {
+        console.error('Error fetching blood bags:', error);
+      }
+    );
+  }
+
   public requestBloodbags(ele?:any){
     if(ele){
       this.requestBloodBag.patchValue({
@@ -77,6 +81,29 @@ export class BloodStockComponent implements OnInit {
     document.getElementById('editUserModal')?.classList.remove('hidden');
 
   }
+
+
+  isExpired(expireDate: Date): boolean {
+    const today = new Date();
+    return new Date(expireDate) < today;
+  }
+
+
+  deleteBag(bagId: string): void {
+    this.http.delete(`http://localhost:3000/api/v1/BloodBags/${bagId}`).subscribe(
+      (res: any) => {
+
+        console.log(res);
+        // Remove the deleted bag from the list
+        this.getbloodsBags();
+        
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    );
+  }
+
 
   groupByProduct(bloodBags: any[]): any[] {
     const groupedProducts: any[] = [];
@@ -97,6 +124,7 @@ export class BloodStockComponent implements OnInit {
     return groupedProducts;
   }
   
+
   closeModel(): void {
     document.getElementById('editUserModal')?.classList.add('hidden');
   }
